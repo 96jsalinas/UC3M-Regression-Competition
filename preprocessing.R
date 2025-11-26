@@ -6,6 +6,30 @@ if (!exists("train_data") || !exists("test_data")) {
 }
 
 # Dummy check: Print list of columns
+
+# Function to generate comprehensive statistics
+generate_statistics <- function(df) {
+  stats <- data.frame(
+    Column = colnames(df),
+    Type = sapply(df, function(x) class(x)[1]),
+    Missing_Count = colSums(is.na(df)),
+    Missing_Pct = round((colSums(is.na(df)) / nrow(df)) * 100, 2),
+    Unique_Values = sapply(df, function(x) length(unique(x))),
+    stringsAsFactors = FALSE
+  )
+
+  # Add numeric stats
+  stats$Min <- sapply(df, function(x) if (is.numeric(x)) min(x, na.rm = TRUE) else NA)
+  stats$Median <- sapply(df, function(x) if (is.numeric(x)) median(x, na.rm = TRUE) else NA)
+  stats$Mean <- sapply(df, function(x) if (is.numeric(x)) mean(x, na.rm = TRUE) else NA)
+  stats$Max <- sapply(df, function(x) if (is.numeric(x)) max(x, na.rm = TRUE) else NA)
+
+  # Reorder columns to put row names (Column) as a proper column if needed,
+  # but here 'Column' is already the first column.
+  rownames(stats) <- NULL
+  return(stats)
+}
+
 if (exists("train_data")) {
   cat("Columns in Train Data:\n")
   print(colnames(train_data))
@@ -25,6 +49,11 @@ if (exists("train_data")) {
   # 3. Anomaly Detection / Summary Statistics
   cat("\n--- Summary Statistics (Train) ---\n")
   print(summary(train_data))
+
+  # Save Statistics to CSV
+  train_stats <- generate_statistics(train_data)
+  write_csv(train_stats, "train_statistics.csv")
+  cat("\n[INFO] Train statistics saved to 'train_statistics.csv'\n")
 }
 
 if (exists("test_data")) {
@@ -42,6 +71,11 @@ if (exists("test_data")) {
   cat("\n--- Duplicate Detection (Test) ---\n")
   duplicates_test <- sum(duplicated(test_data))
   cat("Number of duplicate rows in Test:", duplicates_test, "\n")
+
+  # Save Statistics to CSV
+  test_stats <- generate_statistics(test_data)
+  write_csv(test_stats, "test_statistics.csv")
+  cat("\n[INFO] Test statistics saved to 'test_statistics.csv'\n")
 
   # 3. Column Consistency Check
   cat("\n--- Column Consistency Check ---\n")
