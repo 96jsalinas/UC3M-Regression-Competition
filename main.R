@@ -1,8 +1,3 @@
-# Load necessary libraries
-# Check if packages are installed, if not, you might need to install them:
-# install.packages("readr")
-# install.packages("dplyr")
-
 library(readr)
 library(dplyr)
 
