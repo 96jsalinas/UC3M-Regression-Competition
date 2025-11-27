@@ -5,7 +5,66 @@ if (!exists("train_data") || !exists("test_data")) {
   stop("Data not found in environment. Please run main.R.")
 }
 
-# Dummy check: Print list of columns
+# -----------------------------------------------------------------------------
+# Data Transformation & Cleaning
+# -----------------------------------------------------------------------------
+
+# Function to apply transformations to a dataset
+apply_transformations <- function(df) {
+  # 1. Structural Missing Values (NA = "None" or 0)
+  # ------------------------------------------------
+
+  # Garage Features (excluding GarageYrBlt as per instructions)
+  garage_cols <- c("GarageType", "GarageFinish", "GarageQual", "GarageCond")
+  for (col in garage_cols) {
+    if (col %in% names(df)) {
+      # Replace NA with "None"
+      df[[col]][is.na(df[[col]])] <- "None"
+    }
+  }
+
+  # Basement Features
+  bsmt_cols <- c("BsmtQual", "BsmtCond", "BsmtExposure", "BsmtFinType1", "BsmtFinType2")
+  for (col in bsmt_cols) {
+    if (col %in% names(df)) {
+      df[[col]][is.na(df[[col]])] <- "None"
+    }
+  }
+
+  # Fireplace
+  if ("FireplaceQu" %in% names(df)) {
+    df[["FireplaceQu"]][is.na(df[["FireplaceQu"]])] <- "None"
+  }
+
+  # Masonry
+  if ("MasVnrType" %in% names(df)) {
+    df[["MasVnrType"]][is.na(df[["MasVnrType"]])] <- "None"
+  }
+  if ("MasVnrArea" %in% names(df)) {
+    df[["MasVnrArea"]][is.na(df[["MasVnrArea"]])] <- 0
+  }
+
+  # 2. Type Conversions
+  # -------------------
+
+  # Convert MSSubClass to categorical
+  if ("MSSubClass" %in% names(df)) {
+    df[["MSSubClass"]] <- as.factor(df[["MSSubClass"]])
+  }
+
+  return(df)
+}
+
+# Apply transformations to Train and Test data
+if (exists("train_data")) {
+  cat("\n[INFO] Applying transformations to train_data...\n")
+  train_data <- apply_transformations(train_data)
+}
+
+if (exists("test_data")) {
+  cat("\n[INFO] Applying transformations to test_data...\n")
+  test_data <- apply_transformations(test_data)
+}
 
 # Function to generate comprehensive statistics
 generate_statistics <- function(df) {
