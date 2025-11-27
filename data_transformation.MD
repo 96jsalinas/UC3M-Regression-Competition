@@ -7,7 +7,7 @@ Missing values in the following columns were treated as "Structural Missing" (in
 
 ### Imputed with "None"
 *   **Garage Features**: `GarageType`, `GarageFinish`, `GarageQual`, `GarageCond`
-    *   *Note: `GarageYrBlt` was excluded from this step as per instructions.*
+    *   *Note: `GarageYrBlt` still needs checking, it has empty values but putting 0 will skew the data*
 *   **Basement Features**: `BsmtQual`, `BsmtCond`, `BsmtExposure`, `BsmtFinType1`, `BsmtFinType2`
 *   **Fireplace**: `FireplaceQu`
 *   **Masonry**: `MasVnrType`
