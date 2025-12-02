@@ -185,7 +185,7 @@ cat("\n--- PoolQC Check ---\n")
 check_pool_consistency <- function(df, df_name = "Data") {
   # Find rows where PoolQC is NA but PoolArea > 0
   inconsistent_rows <- df[is.na(df$PoolQC) & df$PoolArea > 0, c("PoolQC", "PoolArea")]
-  
+
   if (nrow(inconsistent_rows) > 0) {
     cat(paste0("\n[WARNING] Inconsistencies found in ", df_name, ":\n"))
     cat("There are", nrow(inconsistent_rows), "rows with NA in PoolQC but PoolArea > 0.\n")
@@ -198,3 +198,51 @@ check_pool_consistency <- function(df, df_name = "Data") {
 # Run the check
 if (exists("train_data")) check_pool_consistency(train_data, "Train Data")
 if (exists("test_data")) check_pool_consistency(test_data, "Test Data")
+
+# Garage Check
+# Check if GarageQual is "None" (imputed) or NA, but GarageArea/Cars > 0
+cat("\n--- Garage Check ---\n")
+check_garage_consistency <- function(df, df_name = "Data") {
+  # Handle NA in numeric columns (treat as 0 for this check)
+  g_area <- df$GarageArea
+  g_area[is.na(g_area)] <- 0
+  g_cars <- df$GarageCars
+  g_cars[is.na(g_cars)] <- 0
+
+  # Check for inconsistency
+  # Note: GarageQual is used as proxy for all categorical garage vars
+  inconsistent_rows <- df[(df$GarageQual == "None" | is.na(df$GarageQual)) & (g_area > 0 | g_cars > 0), c("GarageQual", "GarageArea", "GarageCars")]
+
+  if (nrow(inconsistent_rows) > 0) {
+    cat(paste0("\n[WARNING] Garage Inconsistencies found in ", df_name, ":\n"))
+    cat("There are", nrow(inconsistent_rows), "rows with 'None' or NA in GarageQual but GarageArea/Cars > 0.\n")
+    print(head(inconsistent_rows))
+  } else {
+    cat(paste0("\n[INFO] ", df_name, ": Garage features consistent.\n"))
+  }
+}
+
+if (exists("train_data")) check_garage_consistency(train_data, "Train Data")
+if (exists("test_data")) check_garage_consistency(test_data, "Test Data")
+
+# Basement Check
+# Check if BsmtQual is "None" (imputed) or NA, but TotalBsmtSF > 0
+cat("\n--- Basement Check ---\n")
+check_bsmt_consistency <- function(df, df_name = "Data") {
+  # Handle NA in numeric columns
+  b_sf <- df$TotalBsmtSF
+  b_sf[is.na(b_sf)] <- 0
+
+  inconsistent_rows <- df[(df$BsmtQual == "None" | is.na(df$BsmtQual)) & (b_sf > 0), c("BsmtQual", "TotalBsmtSF")]
+
+  if (nrow(inconsistent_rows) > 0) {
+    cat(paste0("\n[WARNING] Basement Inconsistencies found in ", df_name, ":\n"))
+    cat("There are", nrow(inconsistent_rows), "rows with 'None' or NA in BsmtQual but TotalBsmtSF > 0.\n")
+    print(head(inconsistent_rows))
+  } else {
+    cat(paste0("\n[INFO] ", df_name, ": Basement features consistent.\n"))
+  }
+}
+
+if (exists("train_data")) check_bsmt_consistency(train_data, "Train Data")
+if (exists("test_data")) check_bsmt_consistency(test_data, "Test Data")

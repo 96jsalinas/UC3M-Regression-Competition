@@ -18,7 +18,9 @@ The following columns have a very high percentage of missing values.
 ### Structural Missing Values (NA = "None")
 Many columns have missing values that likely indicate the absence of a feature rather than missing data.
 -   **Garage Features** (`GarageType`, `GarageFinish`, `GarageQual`, `GarageCond`): ~5.5% missing. Matches `GarageYrBlt`.
+    -   **Inconsistency**: In the Test set, there is 1 row where `GarageQual` is NA (imputed to "None") but `GarageArea` is 360 and `GarageCars` is 1.
 -   **Basement Features** (`BsmtQual`, `BsmtCond`, `BsmtExposure`, `BsmtFinType1`, `BsmtFinType2`): ~2.5% missing.
+    -   **Inconsistency**: In the Test set, there are 2 rows where `BsmtQual` is NA (imputed to "None") but `TotalBsmtSF` > 0 (173 and 356).
 -   **Fireplace**: `FireplaceQu` (~47% missing).
 -   **Masonry**: `MasVnrType`, `MasVnrArea` (~0.5% missing).
 -   **Suggestion**:

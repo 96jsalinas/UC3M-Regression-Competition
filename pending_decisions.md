@@ -12,6 +12,8 @@
 - [ ] **High Missing Value Columns** <!-- id: 0 -->
     - [ ] Decide on `PoolQC`, `MiscFeature`, `Alley`, `Fence` (Drop vs Binary Flag)
     - [ ] Resolve `PoolQC` inconsistency (NA but PoolArea > 0)
+    - [ ] Resolve `Garage` inconsistency (1 row in Test: NA but GarageArea=360)
+    - [ ] Resolve `Basement` inconsistency (2 rows in Test: NA but TotalBsmtSF > 0)
 - [ ] **GarageYrBlt** <!-- id: 1 -->
     - [ ] Decide handling (Drop vs GarageAge vs Impute)
 - [ ] **True Missing Values** <!-- id: 2 -->
