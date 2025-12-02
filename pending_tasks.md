@@ -1,5 +1,5 @@
 # Task List
-
+- [ ] **Before we do anything else we should check the materials from class and identify which specific steps we need to follow and which ones we're missing in this task list**
 ## Data Cleaning & Preprocessing
 - [x] **Structural Missing Values (Part 1)**
     - [x] Impute "None" for Garage features (Type, Finish, Qual, Cond)
