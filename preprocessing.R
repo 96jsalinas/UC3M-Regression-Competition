@@ -177,3 +177,24 @@ for (col in char_cols) {
     cat("Warning: New levels in Test for column", col, ":", paste(new_levels, collapse = ", "), "\n")
   }
 }
+
+# PoolQC contains information about the quality of the pool
+# If the value is NA it's supposed to have no pool, but we should verify
+# Function to check consistency between PoolQC and PoolArea
+cat("\n--- PoolQC Check ---\n")
+check_pool_consistency <- function(df, df_name = "Data") {
+  # Find rows where PoolQC is NA but PoolArea > 0
+  inconsistent_rows <- df[is.na(df$PoolQC) & df$PoolArea > 0, c("PoolQC", "PoolArea")]
+  
+  if (nrow(inconsistent_rows) > 0) {
+    cat(paste0("\n[WARNING] Inconsistencies found in ", df_name, ":\n"))
+    cat("There are", nrow(inconsistent_rows), "rows with NA in PoolQC but PoolArea > 0.\n")
+    print(head(inconsistent_rows))
+  } else {
+    cat(paste0("\n[INFO] ", df_name, ": Consistent. All rows with NA in PoolQC have 0 PoolArea.\n"))
+  }
+}
+
+# Run the check
+if (exists("train_data")) check_pool_consistency(train_data, "Train Data")
+if (exists("test_data")) check_pool_consistency(test_data, "Test Data")

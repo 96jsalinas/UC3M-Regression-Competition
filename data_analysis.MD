@@ -10,6 +10,7 @@ Based on the `train_statistics.csv` and `test_statistics.csv` files, here is an 
 ### High Missing Rate (>80%)
 The following columns have a very high percentage of missing values.
 -   **Columns**: `PoolQC` (99.5%), `MiscFeature` (96%), `Alley` (93%), `Fence` (80%).
+-   **PoolQC**: it's supposed to show quality of the pool, having NA on houses with no pool, however in test dataset there's three rows where it has NA but pool area is not 0, we need to decide how to deal with these if we decide to replace NA with "None" (we could assume minimum quality but not NA, or do something else).
 -   **Suggestion**:
     -   **Drop**: These columns contain very little information.
     -   **Alternative**: Create a binary flag (e.g., `HasPool`, `HasAlley`) and then drop the original column.
