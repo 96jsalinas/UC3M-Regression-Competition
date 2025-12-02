@@ -35,5 +35,21 @@
     - [ ] Analyze and remove `GrLivArea` outliers
 
 ## Modeling
+- [ ] Decide on techniques for variable selection based on the ones seen in class.
+- [ ] Decide on model based on the ones seen in class.
 - [ ] Baseline Model
 - [ ] Model Iteration
+## Reporting
+- [ ] Create overleaf project and invite all participants
+- [ ] Chapter on Preprocessing
+    - [ ] Exploratory analysis
+    - [ ] Data cleaning & preprocessing
+    - [ ] Feature engineering
+- [ ] Chapter on Modeling
+    - [ ] Baseline Model
+    - [ ] Feature selection
+    - [ ] Model Iteration
+- [ ] Chapter on Results
+    - [ ] Goodness of fit of the model 
+    - [ ] Used variables in the model
+    - [ ] Other questions (see competition.pdf for details) 
