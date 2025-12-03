@@ -72,6 +72,7 @@ Log-transform strongly right-skewed variables. This helps linearity and homosced
 - [ ] PoolArea
 - [ ] TotalSF
 - [ ] TotalPorchSF
+- [ ] MiscVal
 
 
 ### Fix non-linear relationships

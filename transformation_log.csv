@@ -45,27 +45,28 @@ HasPool,Feature Engineering - Created,1 if PoolArea > 0 else 0,Binary flag for p
 GarageYrBlt,Feature Engineering - Dropped,Column removed after creating GarageAge,Redundant with GarageAge; eliminates multicollinearity
 YearBuilt,Feature Engineering - Dropped,Column removed after creating HouseAge,Redundant with HouseAge; age is more interpretable than year
 YearRemodAdd,Feature Engineering - Dropped,Column removed after creating RemodAge,Redundant with RemodAge; eliminates multicollinearity
-LotFrontage,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-LotArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-MasVnrArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-BsmtFinSF1,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-BsmtFinSF2,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-BsmtUnfSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-TotalBsmtSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-1stFlrSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-2ndFlrSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-LowQualFinSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-GrLivArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-GarageArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-WoodDeckSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-OpenPorchSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-EnclosedPorch,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-3SsnPorch,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-ScreenPorch,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-PoolArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+LotFrontage,Log Transformation,log1p(x) applied,Right-skewed distribution (Skew: 2.16); improves linearity and homoscedasticity
+LotArea,Log Transformation,log1p(x) applied,Highly right-skewed distribution (Skew: 12.18); improves linearity and homoscedasticity
+MasVnrArea,Log Transformation,log1p(x) applied,Right-skewed distribution (Skew: 2.66); improves linearity and homoscedasticity
+BsmtFinSF1,Log Transformation,log1p(x) applied,Right-skewed distribution (Skew: 1.68); improves linearity and homoscedasticity
+BsmtFinSF2,Log Transformation,log1p(x) applied,Highly right-skewed distribution (Skew: 4.25); improves linearity and homoscedasticity
+BsmtUnfSF,Log Transformation,log1p(x) applied,Moderately skewed distribution (Skew: 0.92); improves linearity and homoscedasticity
+TotalBsmtSF,Log Transformation,log1p(x) applied,Right-skewed distribution (Skew: 1.52); improves linearity and homoscedasticity
+1stFlrSF,Log Transformation,log1p(x) applied,Right-skewed distribution (Skew: 1.37); improves linearity and homoscedasticity
+2ndFlrSF,Log Transformation,log1p(x) applied,Moderately skewed distribution (Skew: 0.81); improves linearity and homoscedasticity
+LowQualFinSF,Log Transformation,log1p(x) applied,Highly right-skewed distribution (Skew: 8.99); improves linearity and homoscedasticity
+GrLivArea,Log Transformation,log1p(x) applied,Right-skewed distribution (Skew: 1.36); improves linearity and homoscedasticity
+GarageArea,Log Transformation,log1p(x) applied,Distribution (Skew: 0.18); transformed for consistency with other area features
+WoodDeckSF,Log Transformation,log1p(x) applied,Right-skewed distribution (Skew: 1.54); improves linearity and homoscedasticity
+OpenPorchSF,Log Transformation,log1p(x) applied,Right-skewed distribution (Skew: 2.36); improves linearity and homoscedasticity
+EnclosedPorch,Log Transformation,log1p(x) applied,Highly right-skewed distribution (Skew: 3.08); improves linearity and homoscedasticity
+3SsnPorch,Log Transformation,log1p(x) applied,Highly right-skewed distribution (Skew: 10.28); improves linearity and homoscedasticity
+ScreenPorch,Log Transformation,log1p(x) applied,Highly right-skewed distribution (Skew: 4.11); improves linearity and homoscedasticity
+PoolArea,Log Transformation,log1p(x) applied,Highly right-skewed distribution (Skew: 14.80); improves linearity and homoscedasticity
 TotalSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
 TotalPorchSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
-SalePrice,Log Transformation (Target),log1p(x) applied - TRAIN ONLY,Normalizes right-skewed price distribution; improves model performance
+MiscVal,Log Transformation,log1p(x) applied,Highly skewed distribution (Skew: 24.43); improves linearity
+SalePrice,Log Transformation (Target),log1p(x) applied - TRAIN ONLY,Normalizes right-skewed price distribution (Skew: 1.88); improves model performance
 ExterQual,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Inherent quality ordering from excellent to poor
 ExterCond,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Inherent condition ordering from excellent to poor
 BsmtQual,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Basement height quality has inherent ordering

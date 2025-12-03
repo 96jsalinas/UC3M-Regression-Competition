@@ -248,7 +248,7 @@ log_transform_cols <- c(
   "LotFrontage", "LotArea", "MasVnrArea", "BsmtFinSF1", "BsmtFinSF2",
   "BsmtUnfSF", "TotalBsmtSF", "1stFlrSF", "2ndFlrSF", "LowQualFinSF",
   "GrLivArea", "GarageArea", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch",
-  "3SsnPorch", "ScreenPorch", "PoolArea", "TotalSF", "TotalPorchSF"
+  "3SsnPorch", "ScreenPorch", "PoolArea", "TotalSF", "TotalPorchSF", "MiscVal"
 )
 
 for (col in log_transform_cols) {
