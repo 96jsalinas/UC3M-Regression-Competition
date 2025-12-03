@@ -246,8 +246,8 @@ cat("\n[4/7] Applying transformations...\n")
 # 4.1: Log transform skewed features
 log_transform_cols <- c(
   "LotFrontage", "LotArea", "MasVnrArea", "BsmtFinSF1", "BsmtFinSF2",
-  "BsmtUnfSF", "TotalBsmtSF", "1stFlrSF", "2ndFlrSF", "LowQualFinSF",
-  "GrLivArea", "GarageArea", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch",
+  "1stFlrSF", "2ndFlrSF", "LowQualFinSF",
+  "GrLivArea", "WoodDeckSF", "OpenPorchSF", "EnclosedPorch",
   "3SsnPorch", "ScreenPorch", "PoolArea", "TotalSF", "TotalPorchSF", "MiscVal"
 )
 
@@ -539,3 +539,44 @@ if (nrow(test_data) != n_test) {
 cat("\n========================================\n")
 cat("  PREPROCESSING COMPLETE\n")
 cat("========================================\n\n")
+
+# =============================================================================
+# SECTION 8: POST-PROCESSING ANALYSIS
+# =============================================================================
+
+cat("[8/8] Generating post-processing statistics...\n")
+
+# Generate statistics for processed data
+train_stats_processed <- generate_statistics(train_data, has_target = TRUE)
+test_stats_processed <- generate_statistics(test_data)
+
+write_csv(train_stats_processed, "train_statistics_processed.csv")
+write_csv(test_stats_processed, "test_statistics_processed.csv")
+cat("  - Processed statistics saved to CSV files\n")
+
+# Compare Skewness for transformed variables
+cat("\n  Skewness Reduction Report (Train):\n")
+cat(sprintf("  %-15s | %-10s | %-10s\n", "Feature", "Before", "After"))
+cat("  ------------------------------------------\n")
+
+# Get original skewness from the saved file if possible, otherwise just show current
+if (exists("train_stats")) {
+  for (col in log_transform_cols) {
+    if (col %in% train_stats$Column && col %in% train_stats_processed$Column) {
+      skew_before <- train_stats$Skewness[train_stats$Column == col]
+      skew_after <- train_stats_processed$Skewness[train_stats_processed$Column == col]
+
+      if (!is.na(skew_before) && !is.na(skew_after)) {
+        cat(sprintf("  %-15s | %-10.2f | %-10.2f\n", col, skew_before, skew_after))
+      }
+    }
+  }
+
+  # Check SalePrice
+  if ("SalePrice" %in% train_stats$Column && "SalePrice" %in% train_stats_processed$Column) {
+    skew_before <- train_stats$Skewness[train_stats$Column == "SalePrice"]
+    skew_after <- train_stats_processed$Skewness[train_stats_processed$Column == "SalePrice"]
+    cat("  ------------------------------------------\n")
+    cat(sprintf("  %-15s | %-10.2f | %-10.2f\n", "SalePrice", skew_before, skew_after))
+  }
+}
