@@ -4,13 +4,13 @@
 - [x] OHC
 - [x] SFtotal
 - [x] Years -> Age
-- [ ] Normality (Q-Q plot)
+- [x] Normality (based on statistics)
 - [x] Log transform sale price
 - [x] Scale quant features
-- [ ] Outliers
 ### Modeling
 - [ ] Linear/Ridge/Laso Regression
 - [ ] CV
+- [ ] Outliers
 ### Evaluation
 - [ ] Apply to test dataset
 - [ ] yhat = exp(shat + 1/2sigma^2)
