@@ -142,7 +142,7 @@ Categoricals must be one-hot encoded:
 
 - [ ] HasPool: 1 if PoolArea > 0 else 0
 
-## (E) Improve model stability
+## Improve model stability
 Standardise all numerical predictors (mean = 0, sd = 1).
 - [ ] LotFrontage
 - [ ] LotArea
