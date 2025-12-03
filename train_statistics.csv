@@ -1,82 +1,82 @@
-Column,Type,Missing_Count,Missing_Pct,Unique_Values,Min,Median,Mean,Max
-Id,numeric,0,0,1460,1,730.5,730.5,1460
-MSSubClass,numeric,0,0,15,20,50,56.897260273972606,190
-MSZoning,character,0,0,5,NA,NA,NA,NA
-LotFrontage,numeric,259,17.74,111,21,69,70.04995836802665,313
-LotArea,numeric,0,0,1073,1300,9478.5,10516.828082191782,215245
-Street,character,0,0,2,NA,NA,NA,NA
-Alley,character,1369,93.77,3,NA,NA,NA,NA
-LotShape,character,0,0,4,NA,NA,NA,NA
-LandContour,character,0,0,4,NA,NA,NA,NA
-Utilities,character,0,0,2,NA,NA,NA,NA
-LotConfig,character,0,0,5,NA,NA,NA,NA
-LandSlope,character,0,0,3,NA,NA,NA,NA
-Neighborhood,character,0,0,25,NA,NA,NA,NA
-Condition1,character,0,0,9,NA,NA,NA,NA
-Condition2,character,0,0,8,NA,NA,NA,NA
-BldgType,character,0,0,5,NA,NA,NA,NA
-HouseStyle,character,0,0,8,NA,NA,NA,NA
-OverallQual,numeric,0,0,10,1,6,6.0993150684931505,10
-OverallCond,numeric,0,0,9,1,5,5.575342465753424,9
-YearBuilt,numeric,0,0,112,1872,1973,1971.267808219178,2010
-YearRemodAdd,numeric,0,0,61,1950,1994,1984.8657534246574,2010
-RoofStyle,character,0,0,6,NA,NA,NA,NA
-RoofMatl,character,0,0,8,NA,NA,NA,NA
-Exterior1st,character,0,0,15,NA,NA,NA,NA
-Exterior2nd,character,0,0,16,NA,NA,NA,NA
-MasVnrType,character,8,0.55,5,NA,NA,NA,NA
-MasVnrArea,numeric,8,0.55,328,0,0,103.68526170798899,1600
-ExterQual,character,0,0,4,NA,NA,NA,NA
-ExterCond,character,0,0,5,NA,NA,NA,NA
-Foundation,character,0,0,6,NA,NA,NA,NA
-BsmtQual,character,37,2.53,5,NA,NA,NA,NA
-BsmtCond,character,37,2.53,5,NA,NA,NA,NA
-BsmtExposure,character,38,2.6,5,NA,NA,NA,NA
-BsmtFinType1,character,37,2.53,7,NA,NA,NA,NA
-BsmtFinSF1,numeric,0,0,637,0,383.5,443.6397260273973,5644
-BsmtFinType2,character,38,2.6,7,NA,NA,NA,NA
-BsmtFinSF2,numeric,0,0,144,0,0,46.54931506849315,1474
-BsmtUnfSF,numeric,0,0,780,0,477.5,567.2404109589041,2336
-TotalBsmtSF,numeric,0,0,721,0,991.5,1057.4294520547944,6110
-Heating,character,0,0,6,NA,NA,NA,NA
-HeatingQC,character,0,0,5,NA,NA,NA,NA
-CentralAir,character,0,0,2,NA,NA,NA,NA
-Electrical,character,1,0.07,6,NA,NA,NA,NA
-1stFlrSF,numeric,0,0,753,334,1087,1162.626712328767,4692
-2ndFlrSF,numeric,0,0,417,0,0,346.99246575342465,2065
-LowQualFinSF,numeric,0,0,24,0,0,5.844520547945206,572
-GrLivArea,numeric,0,0,861,334,1464,1515.463698630137,5642
-BsmtFullBath,numeric,0,0,4,0,0,0.42534246575342466,3
-BsmtHalfBath,numeric,0,0,3,0,0,0.057534246575342465,2
-FullBath,numeric,0,0,4,0,2,1.5650684931506849,3
-HalfBath,numeric,0,0,3,0,0,0.38287671232876713,2
-BedroomAbvGr,numeric,0,0,8,0,3,2.8664383561643834,8
-KitchenAbvGr,numeric,0,0,4,0,1,1.0465753424657533,3
-KitchenQual,character,0,0,4,NA,NA,NA,NA
-TotRmsAbvGrd,numeric,0,0,12,2,6,6.517808219178082,14
-Functional,character,0,0,7,NA,NA,NA,NA
-Fireplaces,numeric,0,0,4,0,1,0.613013698630137,3
-FireplaceQu,character,690,47.26,6,NA,NA,NA,NA
-GarageType,character,81,5.55,7,NA,NA,NA,NA
-GarageYrBlt,numeric,81,5.55,98,1900,1980,1978.5061638868744,2010
-GarageFinish,character,81,5.55,4,NA,NA,NA,NA
-GarageCars,numeric,0,0,5,0,2,1.7671232876712328,4
-GarageArea,numeric,0,0,441,0,480,472.9801369863014,1418
-GarageQual,character,81,5.55,6,NA,NA,NA,NA
-GarageCond,character,81,5.55,6,NA,NA,NA,NA
-PavedDrive,character,0,0,3,NA,NA,NA,NA
-WoodDeckSF,numeric,0,0,274,0,0,94.2445205479452,857
-OpenPorchSF,numeric,0,0,202,0,25,46.66027397260274,547
-EnclosedPorch,numeric,0,0,120,0,0,21.954109589041096,552
-3SsnPorch,numeric,0,0,20,0,0,3.4095890410958902,508
-ScreenPorch,numeric,0,0,76,0,0,15.060958904109588,480
-PoolArea,numeric,0,0,8,0,0,2.758904109589041,738
-PoolQC,character,1453,99.52,4,NA,NA,NA,NA
-Fence,character,1179,80.75,5,NA,NA,NA,NA
-MiscFeature,character,1406,96.3,5,NA,NA,NA,NA
-MiscVal,numeric,0,0,21,0,0,43.489041095890414,15500
-MoSold,numeric,0,0,12,1,6,6.321917808219178,12
-YrSold,numeric,0,0,5,2006,2008,2007.8157534246575,2010
-SaleType,character,0,0,9,NA,NA,NA,NA
-SaleCondition,character,0,0,6,NA,NA,NA,NA
-SalePrice,numeric,0,0,663,34900,163000,180921.19589041095,755000
+Column,Type,Missing_Count,Missing_Pct,Unique_Values,Min,Median,Mean,Max,SD,Skewness,Kurtosis,Corr_SalePrice,Skew_Flag
+Id,numeric,0,0,1460,1,730.5,730.5,1460,421.6100093688479,0,1.798,-0.022,Normal
+MSSubClass,numeric,0,0,15,20,50,56.897260273972606,190,42.300570993810425,1.405,4.564,-0.084,Highly Skewed
+MSZoning,character,0,0,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+LotFrontage,numeric,259,17.74,111,21,69,70.04995836802665,313,24.284751774483208,2.158,20.341,0.352,Highly Skewed
+LotArea,numeric,0,0,1073,1300,9478.5,10516.828082191782,215245,9981.26493237915,12.183,205.262,0.264,Highly Skewed
+Street,character,0,0,2,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Alley,character,1369,93.77,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
+LotShape,character,0,0,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+LandContour,character,0,0,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Utilities,character,0,0,2,NA,NA,NA,NA,NA,NA,NA,NA,NA
+LotConfig,character,0,0,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+LandSlope,character,0,0,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Neighborhood,character,0,0,25,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Condition1,character,0,0,9,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Condition2,character,0,0,8,NA,NA,NA,NA,NA,NA,NA,NA,NA
+BldgType,character,0,0,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+HouseStyle,character,0,0,8,NA,NA,NA,NA,NA,NA,NA,NA,NA
+OverallQual,numeric,0,0,10,1,6,6.0993150684931505,10,1.3829965467415937,0.216,3.088,0.791,Normal
+OverallCond,numeric,0,0,9,1,5,5.575342465753424,9,1.1127993367127318,0.692,4.093,-0.078,Moderately Skewed
+YearBuilt,numeric,0,0,112,1872,1973,1971.267808219178,2010,30.202904042525258,-0.612,2.554,0.523,Moderately Skewed
+YearRemodAdd,numeric,0,0,61,1950,1994,1984.8657534246574,2010,20.645406807709413,-0.503,1.726,0.507,Moderately Skewed
+RoofStyle,character,0,0,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+RoofMatl,character,0,0,8,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Exterior1st,character,0,0,15,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Exterior2nd,character,0,0,16,NA,NA,NA,NA,NA,NA,NA,NA,NA
+MasVnrType,character,8,0.55,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+MasVnrArea,numeric,8,0.55,328,0,0,103.68526170798899,1600,181.0662065872166,2.664,13.026,0.477,Highly Skewed
+ExterQual,character,0,0,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+ExterCond,character,0,0,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Foundation,character,0,0,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+BsmtQual,character,37,2.53,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+BsmtCond,character,37,2.53,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+BsmtExposure,character,38,2.6,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+BsmtFinType1,character,37,2.53,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+BsmtFinSF1,numeric,0,0,637,0,383.5,443.6397260273973,5644,456.09809084092774,1.682,14.057,0.386,Highly Skewed
+BsmtFinType2,character,38,2.6,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+BsmtFinSF2,numeric,0,0,144,0,0,46.54931506849315,1474,161.31927280654173,4.247,23.009,-0.011,Highly Skewed
+BsmtUnfSF,numeric,0,0,780,0,477.5,567.2404109589041,2336,441.86695529243417,0.918,3.465,0.214,Moderately Skewed
+TotalBsmtSF,numeric,0,0,721,0,991.5,1057.4294520547944,6110,438.7053244594708,1.521,16.179,0.614,Highly Skewed
+Heating,character,0,0,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+HeatingQC,character,0,0,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+CentralAir,character,0,0,2,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Electrical,character,1,0.07,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+1stFlrSF,numeric,0,0,753,334,1087,1162.626712328767,4692,386.5877380410743,1.374,8.71,0.606,Highly Skewed
+2ndFlrSF,numeric,0,0,417,0,0,346.99246575342465,2065,436.5284358862568,0.811,2.441,0.319,Moderately Skewed
+LowQualFinSF,numeric,0,0,24,0,0,5.844520547945206,572,48.62308143352019,8.993,85.828,-0.026,Highly Skewed
+GrLivArea,numeric,0,0,861,334,1464,1515.463698630137,5642,525.4803834232025,1.364,7.863,0.709,Highly Skewed
+BsmtFullBath,numeric,0,0,4,0,0,0.42534246575342466,3,0.5189106060898064,0.595,2.157,0.227,Moderately Skewed
+BsmtHalfBath,numeric,0,0,3,0,0,0.057534246575342465,2,0.23875264627921178,4.095,19.31,-0.017,Highly Skewed
+FullBath,numeric,0,0,4,0,2,1.5650684931506849,3,0.5509158012954317,0.036,2.139,0.561,Normal
+HalfBath,numeric,0,0,3,0,0,0.38287671232876713,2,0.5028853810928913,0.675,1.92,0.284,Moderately Skewed
+BedroomAbvGr,numeric,0,0,8,0,3,2.8664383561643834,8,0.8157780441442284,0.211,5.212,0.168,Normal
+KitchenAbvGr,numeric,0,0,4,0,1,1.0465753424657533,3,0.2203381983840307,4.479,24.421,-0.136,Highly Skewed
+KitchenQual,character,0,0,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+TotRmsAbvGrd,numeric,0,0,12,2,6,6.517808219178082,14,1.6253932905840505,0.675,3.868,0.534,Moderately Skewed
+Functional,character,0,0,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Fireplaces,numeric,0,0,4,0,1,0.613013698630137,3,0.6446663863122295,0.648,2.776,0.467,Moderately Skewed
+FireplaceQu,character,690,47.26,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+GarageType,character,81,5.55,7,NA,NA,NA,NA,NA,NA,NA,NA,NA
+GarageYrBlt,numeric,81,5.55,98,1900,1980,1978.5061638868744,2010,24.68972476859024,-0.648,2.575,0.486,Moderately Skewed
+GarageFinish,character,81,5.55,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+GarageCars,numeric,0,0,5,0,2,1.7671232876712328,4,0.7473150101111093,-0.342,3.212,0.64,Normal
+GarageArea,numeric,0,0,441,0,480,472.9801369863014,1418,213.80484145338042,0.18,3.904,0.623,Normal
+GarageQual,character,81,5.55,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+GarageCond,character,81,5.55,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+PavedDrive,character,0,0,3,NA,NA,NA,NA,NA,NA,NA,NA,NA
+WoodDeckSF,numeric,0,0,274,0,0,94.2445205479452,857,125.3387943517241,1.538,5.97,0.324,Highly Skewed
+OpenPorchSF,numeric,0,0,202,0,25,46.66027397260274,547,66.25602767664971,2.359,11.441,0.316,Highly Skewed
+EnclosedPorch,numeric,0,0,120,0,0,21.954109589041096,552,61.11914860172859,3.084,13.373,-0.129,Highly Skewed
+3SsnPorch,numeric,0,0,20,0,0,3.4095890410958902,508,29.317330556781883,10.283,126.062,0.045,Highly Skewed
+ScreenPorch,numeric,0,0,76,0,0,15.060958904109588,480,55.75741528187418,4.114,21.343,0.111,Highly Skewed
+PoolArea,numeric,0,0,8,0,0,2.758904109589041,738,40.17730694453018,14.798,225.192,0.092,Highly Skewed
+PoolQC,character,1453,99.52,4,NA,NA,NA,NA,NA,NA,NA,NA,NA
+Fence,character,1179,80.75,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+MiscFeature,character,1406,96.3,5,NA,NA,NA,NA,NA,NA,NA,NA,NA
+MiscVal,numeric,0,0,21,0,0,43.489041095890414,15500,496.12302445794415,24.427,700.64,-0.021,Highly Skewed
+MoSold,numeric,0,0,12,1,6,6.321917808219178,12,2.7036262083595126,0.212,2.59,0.046,Normal
+YrSold,numeric,0,0,5,2006,2008,2007.8157534246575,2010,1.3280951205521097,0.096,1.807,-0.029,Normal
+SaleType,character,0,0,9,NA,NA,NA,NA,NA,NA,NA,NA,NA
+SaleCondition,character,0,0,6,NA,NA,NA,NA,NA,NA,NA,NA,NA
+SalePrice,numeric,0,0,663,34900,163000,180921.19589041095,755000,79442.5028828866,1.879,9.497,1,Highly Skewed

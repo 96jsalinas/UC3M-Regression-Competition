@@ -21,7 +21,7 @@ n_test <- nrow(test_data)
 cat("[1/7] Data quality checks and exploration...\n")
 
 # Function to generate comprehensive statistics
-generate_statistics <- function(df) {
+generate_statistics <- function(df, has_target = FALSE) {
   stats <- data.frame(
     Column = colnames(df),
     Type = sapply(df, function(x) class(x)[1]),
@@ -36,13 +36,64 @@ generate_statistics <- function(df) {
   stats$Median <- sapply(df, function(x) if (is.numeric(x)) median(x, na.rm = TRUE) else NA)
   stats$Mean <- sapply(df, function(x) if (is.numeric(x)) mean(x, na.rm = TRUE) else NA)
   stats$Max <- sapply(df, function(x) if (is.numeric(x)) max(x, na.rm = TRUE) else NA)
+  stats$SD <- sapply(df, function(x) if (is.numeric(x)) sd(x, na.rm = TRUE) else NA)
+
+  # Add distribution metrics (skewness and kurtosis)
+  stats$Skewness <- sapply(df, function(x) {
+    if (is.numeric(x) && length(unique(na.omit(x))) > 1) {
+      x_clean <- na.omit(x)
+      n <- length(x_clean)
+      mean_x <- mean(x_clean)
+      sd_x <- sd(x_clean)
+      if (sd_x > 0) {
+        skew <- sum((x_clean - mean_x)^3) / (n * sd_x^3)
+        return(round(skew, 3))
+      }
+    }
+    return(NA)
+  })
+
+  stats$Kurtosis <- sapply(df, function(x) {
+    if (is.numeric(x) && length(unique(na.omit(x))) > 1) {
+      x_clean <- na.omit(x)
+      n <- length(x_clean)
+      mean_x <- mean(x_clean)
+      sd_x <- sd(x_clean)
+      if (sd_x > 0) {
+        kurt <- sum((x_clean - mean_x)^4) / (n * sd_x^4)
+        return(round(kurt, 3))
+      }
+    }
+    return(NA)
+  })
+
+  # Add correlation with target (if enabled and SalePrice exists)
+  if (has_target && "SalePrice" %in% names(df)) {
+    stats$Corr_SalePrice <- sapply(df, function(x) {
+      if (is.numeric(x) && length(unique(na.omit(x))) > 1) {
+        corr <- cor(x, df$SalePrice, use = "complete.obs")
+        return(round(corr, 3))
+      }
+      return(NA)
+    })
+  } else {
+    stats$Corr_SalePrice <- NA
+  }
+
+  # Add interpretation flags
+  stats$Skew_Flag <- ifelse(!is.na(stats$Skewness),
+    ifelse(abs(stats$Skewness) > 1, "Highly Skewed",
+      ifelse(abs(stats$Skewness) > 0.5, "Moderately Skewed", "Normal")
+    ),
+    NA
+  )
 
   rownames(stats) <- NULL
   return(stats)
 }
 
 # Generate and save statistics
-train_stats <- generate_statistics(train_data)
+train_stats <- generate_statistics(train_data, has_target = TRUE)
 test_stats <- generate_statistics(test_data)
 
 write_csv(train_stats, "train_statistics.csv")
