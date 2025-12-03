@@ -1,12 +1,12 @@
 # Task List
 ### Preprocessing
-- [ ] NAs
-- [ ] OHC
-- [ ] SFtotal
-- [ ] Years -> Age
+- [x] NAs
+- [x] OHC
+- [x] SFtotal
+- [x] Years -> Age
 - [ ] Normality (Q-Q plot)
-- [ ] Log transform sale price
-- [ ] Scale quant features
+- [x] Log transform sale price
+- [x] Scale quant features
 - [ ] Outliers
 ### Modeling
 - [ ] Linear/Ridge/Laso Regression
