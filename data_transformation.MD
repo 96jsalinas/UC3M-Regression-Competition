@@ -159,6 +159,14 @@ These categorical variables have no inherent order and should be one-hot encoded
 - [ ] HasFireplace: 1 if Fireplaces > 0 else 0
 - [ ] HasPool: 1 if PoolArea > 0 else 0
 
+### Drop redundant features
+After creating age features, drop the original year columns to avoid multicollinearity and improve interpretability:
+- [ ] GarageYrBlt - replaced by GarageAge
+- [ ] YearBuilt - replaced by HouseAge
+- [ ] YearRemodAdd - replaced by RemodAge
+
+**Keep:** YrSold and MoSold (capture market timing and seasonal effects)
+
 ### Transform target variable (TRAIN ONLY)
 - [ ] SalePrice - log1p transformation to normalize distribution
 

@@ -21,6 +21,5 @@ if (file.exists(test_path)) {
 
 # Execute Pipeline
 source("preprocessing.R")
-source("data_exploration.R")
 source("model_building.R")
 source("evaluation.R")

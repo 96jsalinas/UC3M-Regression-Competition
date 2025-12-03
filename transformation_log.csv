@@ -1,0 +1,125 @@
+Column_Name,Transformation_Type,Action_Taken,Reasoning
+Alley,Missing Value Imputation,NA replaced with 'None',NA indicates no alley access per data description
+MasVnrType,Missing Value Imputation,NA replaced with 'None',NA indicates no masonry veneer
+BsmtQual,Missing Value Imputation,NA replaced with 'None',NA indicates no basement
+BsmtCond,Missing Value Imputation,NA replaced with 'None',NA indicates no basement
+BsmtExposure,Missing Value Imputation,NA replaced with 'None',NA indicates no basement
+BsmtFinType1,Missing Value Imputation,NA replaced with 'None',NA indicates no basement
+BsmtFinType2,Missing Value Imputation,NA replaced with 'None',NA indicates no basement
+FireplaceQu,Missing Value Imputation,NA replaced with 'None',NA indicates no fireplace
+GarageType,Missing Value Imputation,NA replaced with 'None',NA indicates no garage
+GarageFinish,Missing Value Imputation,NA replaced with 'None',NA indicates no garage
+GarageQual,Missing Value Imputation,NA replaced with 'None',NA indicates no garage
+GarageCond,Missing Value Imputation,NA replaced with 'None',NA indicates no garage
+PoolQC,Missing Value Imputation,NA replaced with 'None',NA indicates no pool
+Fence,Missing Value Imputation,NA replaced with 'None',NA indicates no fence
+MiscFeature,Missing Value Imputation,NA replaced with 'None',NA indicates no misc feature
+MasVnrArea,Missing Value Imputation,NA replaced with 0,No masonry veneer = 0 square feet
+BsmtFinSF1,Missing Value Imputation,NA replaced with 0,No basement = 0 square feet
+BsmtFinSF2,Missing Value Imputation,NA replaced with 0,No basement = 0 square feet
+BsmtUnfSF,Missing Value Imputation,NA replaced with 0,No basement = 0 square feet
+TotalBsmtSF,Missing Value Imputation,NA replaced with 0,No basement = 0 square feet
+BsmtFullBath,Missing Value Imputation,NA replaced with 0,No basement = 0 bathrooms
+BsmtHalfBath,Missing Value Imputation,NA replaced with 0,No basement = 0 bathrooms
+GarageCars,Missing Value Imputation,NA replaced with 0,No garage = 0 car capacity
+GarageArea,Missing Value Imputation,NA replaced with 0,No garage = 0 square feet
+LotFrontage,Missing Value Imputation,NA imputed with neighborhood median (fallback to overall median),Houses in same neighborhood share similar lot characteristics
+MSZoning,Missing Value Imputation,NA imputed with mode from training data,Test-specific missing values - use most common category
+Utilities,Missing Value Imputation,NA imputed with mode from training data,Test-specific missing values - use most common category
+Exterior1st,Missing Value Imputation,NA imputed with mode from training data,Test-specific missing values - use most common category
+Exterior2nd,Missing Value Imputation,NA imputed with mode from training data,Test-specific missing values - use most common category
+KitchenQual,Missing Value Imputation,NA imputed with mode from training data,Test-specific missing values - use most common category
+Functional,Missing Value Imputation,NA imputed with mode from training data,Test-specific missing values - use most common category
+SaleType,Missing Value Imputation,NA imputed with mode from training data,Test-specific missing values - use most common category
+Electrical,Missing Value Imputation,NA imputed with mode from training data,Missing in both train and test - use most common category
+TotalSF,Feature Engineering - Created,TotalBsmtSF + 1stFlrSF + 2ndFlrSF,Composite measure of total living space across all floors
+TotalBath,Feature Engineering - Created,FullBath + 0.5*HalfBath + BsmtFullBath + 0.5*BsmtHalfBath,Total bathroom count weighted by type (full vs half)
+TotalPorchSF,Feature Engineering - Created,OpenPorchSF + EnclosedPorch + 3SsnPorch + ScreenPorch,Total outdoor porch space across all types
+HouseAge,Feature Engineering - Created,YrSold - YearBuilt,Age is more meaningful than absolute year for pricing
+RemodAge,Feature Engineering - Created,YrSold - YearRemodAdd,How recently remodeled affects value more than remodel year
+GarageAge,Feature Engineering - Created,YrSold - GarageYrBlt (0 if NA),Age of garage relative to sale date
+HasGarage,Feature Engineering - Created,1 if GarageArea > 0 else 0,Binary flag for presence of garage
+HasBasement,Feature Engineering - Created,1 if TotalBsmtSF > 0 else 0,Binary flag for presence of basement
+HasFireplace,Feature Engineering - Created,1 if Fireplaces > 0 else 0,Binary flag for presence of fireplace
+HasPool,Feature Engineering - Created,1 if PoolArea > 0 else 0,Binary flag for presence of pool
+GarageYrBlt,Feature Engineering - Dropped,Column removed after creating GarageAge,Redundant with GarageAge; eliminates multicollinearity
+YearBuilt,Feature Engineering - Dropped,Column removed after creating HouseAge,Redundant with HouseAge; age is more interpretable than year
+YearRemodAdd,Feature Engineering - Dropped,Column removed after creating RemodAge,Redundant with RemodAge; eliminates multicollinearity
+LotFrontage,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+LotArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+MasVnrArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+BsmtFinSF1,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+BsmtFinSF2,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+BsmtUnfSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+TotalBsmtSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+1stFlrSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+2ndFlrSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+LowQualFinSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+GrLivArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+GarageArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+WoodDeckSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+OpenPorchSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+EnclosedPorch,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+3SsnPorch,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+ScreenPorch,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+PoolArea,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+TotalSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+TotalPorchSF,Log Transformation,log1p(x) applied,Right-skewed distribution; improves linearity and homoscedasticity
+SalePrice,Log Transformation (Target),log1p(x) applied - TRAIN ONLY,Normalizes right-skewed price distribution; improves model performance
+ExterQual,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Inherent quality ordering from excellent to poor
+ExterCond,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Inherent condition ordering from excellent to poor
+BsmtQual,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Basement height quality has inherent ordering
+BsmtCond,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Basement condition has inherent ordering
+HeatingQC,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Heating quality has inherent ordering
+KitchenQual,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Kitchen quality has inherent ordering
+FireplaceQu,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Fireplace quality has inherent ordering
+GarageQual,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Garage quality has inherent ordering
+GarageCond,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Garage condition has inherent ordering
+PoolQC,Ordinal Encoding,Mapped: Ex=5 Gd=4 TA=3 Fa=2 Po=1 None=0,Pool quality has inherent ordering
+BsmtExposure,Ordinal Encoding,Mapped: Gd=4 Av=3 Mn=2 No=1 None=0,Exposure level has inherent ordering from good to none
+BsmtFinType1,Ordinal Encoding,Mapped: GLQ=6 ALQ=5 BLQ=4 Rec=3 LwQ=2 Unf=1 None=0,Finish type quality has inherent ordering
+BsmtFinType2,Ordinal Encoding,Mapped: GLQ=6 ALQ=5 BLQ=4 Rec=3 LwQ=2 Unf=1 None=0,Finish type quality has inherent ordering
+Functional,Ordinal Encoding,Mapped: Typ=8 Min1=7 Min2=6 Mod=5 Maj1=4 Maj2=3 Sev=2 Sal=1,Functionality deductions have inherent severity ordering
+LotShape,Ordinal Encoding,Mapped: Reg=4 IR1=3 IR2=2 IR3=1,Shape regularity has inherent ordering
+LandSlope,Ordinal Encoding,Mapped: Gtl=3 Mod=2 Sev=1,Slope severity has inherent ordering
+Utilities,Ordinal Encoding,Mapped: AllPub=4 NoSewr=3 NoSeWa=2 ELO=1,Utility availability has inherent ordering
+PavedDrive,Ordinal Encoding,Mapped: Y=3 P=2 N=1,Paving level has inherent ordering
+MSSubClass,One-Hot Encoding,Converted to factor then dummy variables,Dwelling type codes are nominal categories
+MSZoning,One-Hot Encoding,Converted to dummy variables,Zoning classifications are nominal categories
+Street,One-Hot Encoding,Converted to dummy variables,Road type is nominal category
+Alley,One-Hot Encoding,Converted to dummy variables,Alley type is nominal category
+LandContour,One-Hot Encoding,Converted to dummy variables,Flatness type is nominal category
+LotConfig,One-Hot Encoding,Converted to dummy variables,Lot configuration is nominal category
+Neighborhood,One-Hot Encoding,Converted to dummy variables,Location is nominal category; important for pricing
+Condition1,One-Hot Encoding,Converted to dummy variables,Proximity conditions are nominal categories
+Condition2,One-Hot Encoding,Converted to dummy variables,Proximity conditions are nominal categories
+BldgType,One-Hot Encoding,Converted to dummy variables,Building type is nominal category
+HouseStyle,One-Hot Encoding,Converted to dummy variables,Architectural style is nominal category
+RoofStyle,One-Hot Encoding,Converted to dummy variables,Roof type is nominal category
+RoofMatl,One-Hot Encoding,Converted to dummy variables,Roof material is nominal category
+Exterior1st,One-Hot Encoding,Converted to dummy variables,Exterior material is nominal category
+Exterior2nd,One-Hot Encoding,Converted to dummy variables,Exterior material is nominal category
+MasVnrType,One-Hot Encoding,Converted to dummy variables,Masonry type is nominal category
+Foundation,One-Hot Encoding,Converted to dummy variables,Foundation type is nominal category
+Heating,One-Hot Encoding,Converted to dummy variables,Heating type is nominal category
+CentralAir,One-Hot Encoding,Converted to dummy variables,Binary yes/no for central air
+Electrical,One-Hot Encoding,Converted to dummy variables,Electrical system type is nominal category
+GarageType,One-Hot Encoding,Converted to dummy variables,Garage location type is nominal category
+GarageFinish,One-Hot Encoding,Converted to dummy variables,Garage finish level is nominal category
+Fence,One-Hot Encoding,Converted to dummy variables,Fence type is nominal category
+MiscFeature,One-Hot Encoding,Converted to dummy variables,Miscellaneous feature type is nominal category
+SaleType,One-Hot Encoding,Converted to dummy variables,Sale type is nominal category
+SaleCondition,One-Hot Encoding,Converted to dummy variables,Sale condition is nominal category
+All_Numeric_Features,Standardization,Scaled to mean=0 std=1 using training parameters,Puts all features on same scale; improves convergence and coefficient interpretability
+OverallQual,Standardization,Scaled to mean=0 std=1,Already numeric 1-10 scale; standardized for consistency
+OverallCond,Standardization,Scaled to mean=0 std=1,Already numeric 1-10 scale; standardized for consistency
+GrLivArea_sq,Polynomial Term - Created,GrLivArea^2 from standardized feature,Captures non-linear relationship between living area and price
+TotalSF_sq,Polynomial Term - Created,TotalSF^2 from standardized feature,Captures non-linear relationship between total space and price
+LotArea_sq,Polynomial Term - Created,LotArea^2 from standardized feature,Captures non-linear relationship between lot size and price
+HouseAge_sq,Polynomial Term - Created,HouseAge^2 from standardized feature,Captures non-linear depreciation effects
+RemodAge_sq,Polynomial Term - Created,RemodAge^2 from standardized feature,Captures diminishing returns of recent remodeling
+OverallQual_x_GrLivArea,Interaction Term - Created,OverallQual * GrLivArea,High quality large homes command premium; synergistic effect
+OverallQual_x_TotalSF,Interaction Term - Created,OverallQual * TotalSF,Quality amplifies value of total space
+GarageCars_x_GarageArea,Interaction Term - Created,GarageCars * GarageArea,Captures garage size consistency
+TotalBath_x_GrLivArea,Interaction Term - Created,TotalBath * GrLivArea,More bathrooms valuable in larger homes
+HouseAge_x_OverallQual,Interaction Term - Created,HouseAge * OverallQual,Quality mitigates age depreciation
