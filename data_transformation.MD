@@ -224,3 +224,99 @@ Interactions of standardized features are already on compatible scale
 - [ ] GarageCars_x_GarageArea
 - [ ] TotalBath_x_GrLivArea
 - [ ] HouseAge_x_OverallQual
+
+# Checked manually by Eoin
+## Numerical 
+- [ ] LotFrontage (Right-skewed)
+- [ ] LotArea (Right-skewed).
+- [ ] MasVnrArea (Right skewed)
+- [ ] BsmtFinSF1 (Right skewed)
+- [ ] BsmtFinSF2 (Heavy-Right skew)
+- [ ] BsmtUnfSF (Right-Skew)
+- [ ] TotalBsmtSF (slight skew right)
+- [ ] X1stFlrSF (skew right)
+- [ ] X2ndFlrSF (skew right)
+- [ ] LowQualFinSF (skew right, many zeros and could leave out)
+- [ ] GrLivArea (slight skew right)
+- Idk about te below ones as they could fit into categorical aswell. I asked chatgpt and said numeric
+- [ ] BsmtFullBath (right skewed i guess but idk if this fits better categorical as only 0,1,2 in the numbers)
+- [ ] BsmtHalfBath (Again only 0s and 1s but more 0s)
+- [ ] FullBath (Normal deom 0 to 4)
+- [ ] HalfBath (Right skew from  0 to 2)
+- [ ] BedroomAbvGr (Normal about 3, range from 0 to 6)
+- [ ] TotRmsAbvGrd (Normal about 5, range from 2 to 12)
+- [ ] Fireplaces (Right skew but only 4 categories, add binary of has fireplace or not)
+- this is where they stop
+- [ ] Garage year built( do years since and check) Compute GarageAge = YrSold − GarageYrBlt, after imputing missing garageYrBlt = YearBuilt.
+- [ ] WoodDeckSF (Right-skew)
+- [ ] OpenPorchSF(Right-skew)
+- [ ] EnclosedPorch(Right-skew)
+- [ ] X3SsnPorch (right-skew)
+- [ ] ScreenPorch (right-skew)
+- [ ] PoolArea (Skew-right)
+- [ ] MiscVal (Skew-right) issue saying not to log. could drop
+- [ ] SalePrice (Right-skew)
+- [ ] Year Remod added (use to compute remodage)
+
+## Categorical
+- [ ] KitchenAbvGr (Only values of 1 or 2)
+# ONE-HOT
+- [ ] YrSold
+- [ ] MoSold (One-hot)  
+- [ ] MSZoning (One-hot)  
+- [ ] MSSubClass (One-hot)  
+- [ ] Street (One-hot) (Binary)  
+- [ ] Alley (one-hot)  
+- [ ] LandContour (one-hot)   
+- [ ] LotConfig (One-hot)  
+- [ ] Neighbourhood (One-hot)  
+- [ ] Condition1 (One-hot)  
+- [ ] Condition2 (One-hot)  
+- [ ] BldgType (One-hot)  
+- [ ] HouseStyle (One-hot)  
+- [ ] RoofStye (One-hot)  
+- [ ] RoofMatl (One-hot)  
+- [ ] Exterior1st (one-hot)  
+- [ ] Exterior2nd (one-hot)  
+- [ ] MasVnrType (one-hot)  
+- [ ] Foundation (one-hot)  
+- [ ] Heating (one-hot)  
+- [ ] Electrical (one-hot)  
+- [ ] Garagetype (one-hot)  
+- [ ] MiscFeature (one-hot)  
+- [ ] SaleType (one-hot)  
+- [ ] SaleCondition (one-hot)  
+- [ ] CentralAir (Binary)
+
+# ORDINAL
+- [ ] OverallCond
+- [ ] OverallQual
+- [ ] LotShape (ordinal) Rg > IR1 > IR2 > IR3  
+- [ ] Utilities (ordinal) AllPub > NoSwer > NoSeWa > ELO  
+- [ ] LandSlope (Ordinal) Gtl > Mod > Sev  
+- [ ] ExterQual (ordinal)  
+- [ ] ExterCond (ordinal)  
+- [ ] BsmtQual (ordinal)  
+- [ ] BsmtCond (ordinal)  
+- [ ] BsmtExposure (ordinal)  
+- [ ] BsmtFinType1 (ordinal)  
+- [ ] BsmtFinType2 (ordinal)  
+- [ ] HeatingQC (ordinal)  
+- [ ] KitchenQual (ordinal)  
+- [ ] Functional (ordinal)  
+- [ ] FireplaceQu (ordinal)  
+- [ ] GarageFinish (ordinal)  
+- [ ] GarageQuak (ordinal)  
+- [ ] GarageCond (ordinal)  
+- [ ] PavedDrive (ordinal)  
+- [ ] PoolQC (ordinal)  
+- [ ] Fence (ordinal)
+
+# Differences Josu/ Eoin
+- MiscVal. I got that theres so many zeros that we shouldnt log as will create noise.
+- Missing KitchenAbvGr
+- You say GarageFinish should be one-hot i say ordinal
+- You say Fence one-hot i say ordinal
+- You say Remodage one-hot i say numeric
+
+
