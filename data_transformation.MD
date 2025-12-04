@@ -114,6 +114,8 @@ These categorical variables have inherent order and should be mapped to numeric 
 **Utilities and access**:
 - [ ] Utilities - type of utilities available (AllPub=4, NoSewr=3, NoSeWa=2, ELO=1)
 - [ ] PavedDrive - paved driveway (Y=3, P=2, N=1)
+- [ ] GarageFinish - garage interior finish (Fin=3, RFn=2, Unf=1, None=0)
+- [ ] Fence - fence quality (GdPrv=4, MnPrv=3, GdWo=2, MnWw=1, None=0)
 
 ### Nominal Encoding (One-Hot)
 These categorical variables have no inherent order and should be one-hot encoded:
@@ -138,8 +140,7 @@ These categorical variables have no inherent order and should be one-hot encoded
 - [ ] CentralAir - one-hot
 - [ ] Electrical - one-hot
 - [ ] GarageType - one-hot
-- [ ] GarageFinish - one-hot
-- [ ] Fence - one-hot
+- [ ] GarageType - one-hot
 - [ ] MiscFeature - one-hot
 - [ ] SaleType - one-hot
 - [ ] SaleCondition - one-hot
@@ -155,6 +156,7 @@ These categorical variables have no inherent order and should be one-hot encoded
 - [ ] HasBasement: 1 if TotalBsmtSF > 0 else 0
 - [ ] HasFireplace: 1 if Fireplaces > 0 else 0
 - [ ] HasPool: 1 if PoolArea > 0 else 0
+- [ ] HasMultipleKitchens: 1 if KitchenAbvGr > 1 else 0
 
 ### Drop redundant features
 After creating age features, drop the original year columns to avoid multicollinearity and improve interpretability:
@@ -199,7 +201,6 @@ Standardize in this specific order to ensure proper scaling:
 - [ ] GarageAge
 - [ ] BedroomAbvGr
 - [ ] TotRmsAbvGrd
-- [ ] KitchenAbvGr
 - [ ] Fireplaces
 - [ ] FullBath
 - [ ] HalfBath
@@ -259,7 +260,6 @@ Interactions of standardized features are already on compatible scale
 - [ ] Year Remod added (use to compute remodage)
 
 ## Categorical
-- [ ] KitchenAbvGr (Only values of 1 or 2)
 # ONE-HOT
 - [ ] YrSold
 - [ ] MoSold (One-hot)  
@@ -314,9 +314,9 @@ Interactions of standardized features are already on compatible scale
 
 # Differences Josu/ Eoin
 - MiscVal. I got that theres so many zeros that we shouldnt log as will create noise.
-- Missing KitchenAbvGr
-- You say GarageFinish should be one-hot i say ordinal
-- You say Fence one-hot i say ordinal
+- Missing KitchenAbvGr. Implemented
+- You say GarageFinish should be one-hot i say ordinal. Implemented
+- You say Fence one-hot i say ordinal. Implemented
 - You say Remodage one-hot i say numeric
 
 

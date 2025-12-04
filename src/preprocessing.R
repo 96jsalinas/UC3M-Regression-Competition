@@ -221,7 +221,8 @@ create_features <- function(df) {
       HasGarage = ifelse(GarageArea > 0, 1, 0),
       HasBasement = ifelse(TotalBsmtSF > 0, 1, 0),
       HasFireplace = ifelse(Fireplaces > 0, 1, 0),
-      HasPool = ifelse(PoolArea > 0, 1, 0)
+      HasPool = ifelse(PoolArea > 0, 1, 0),
+      HasMultipleKitchens = ifelse(KitchenAbvGr > 1, 1, 0)
     )
 
   return(df)
@@ -229,7 +230,7 @@ create_features <- function(df) {
 
 train_data <- create_features(train_data)
 test_data <- create_features(test_data)
-cat("  - 10 new features created\n")
+cat("  - 11 new features created\n")
 
 # Drop redundant features (replaced by age features)
 redundant_cols <- c("GarageYrBlt", "YearBuilt", "YearRemodAdd")
@@ -332,7 +333,17 @@ paved_mapping <- c("Y" = 3, "P" = 2, "N" = 1)
 train_data <- ordinal_encode(train_data, "PavedDrive", paved_mapping)
 test_data <- ordinal_encode(test_data, "PavedDrive", paved_mapping)
 
-cat("  - Ordinal encoding applied to 18 features\n")
+# GarageFinish
+garage_finish_mapping <- c("Fin" = 3, "RFn" = 2, "Unf" = 1, "None" = 0)
+train_data <- ordinal_encode(train_data, "GarageFinish", garage_finish_mapping)
+test_data <- ordinal_encode(test_data, "GarageFinish", garage_finish_mapping)
+
+# Fence
+fence_mapping <- c("GdPrv" = 4, "MnPrv" = 3, "GdWo" = 2, "MnWw" = 1, "None" = 0)
+train_data <- ordinal_encode(train_data, "Fence", fence_mapping)
+test_data <- ordinal_encode(test_data, "Fence", fence_mapping)
+
+cat("  - Ordinal encoding applied to 20 features\n")
 
 # 5.2: Convert MSSubClass to factor (already done in original, but ensure it)
 if ("MSSubClass" %in% names(train_data)) {
@@ -346,7 +357,7 @@ nominal_cols <- c(
   "Neighborhood", "Condition1", "Condition2", "BldgType", "HouseStyle",
   "RoofStyle", "RoofMatl", "Exterior1st", "Exterior2nd", "MasVnrType",
   "Foundation", "Heating", "CentralAir", "Electrical", "GarageType",
-  "GarageFinish", "Fence", "MiscFeature", "SaleType", "SaleCondition"
+  "MiscFeature", "SaleType", "SaleCondition"
 )
 
 # Keep only columns that exist and are still character/factor

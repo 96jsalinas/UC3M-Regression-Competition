@@ -42,6 +42,7 @@ HasGarage,Feature Engineering - Created,1 if GarageArea > 0 else 0,Binary flag f
 HasBasement,Feature Engineering - Created,1 if TotalBsmtSF > 0 else 0,Binary flag for presence of basement
 HasFireplace,Feature Engineering - Created,1 if Fireplaces > 0 else 0,Binary flag for presence of fireplace
 HasPool,Feature Engineering - Created,1 if PoolArea > 0 else 0,Binary flag for presence of pool
+HasMultipleKitchens,Feature Engineering - Created,1 if KitchenAbvGr > 1 else 0,Binary flag for multiple kitchens (rare; captures unusual layouts)
 GarageYrBlt,Feature Engineering - Dropped,Column removed after creating GarageAge,Redundant with GarageAge; eliminates multicollinearity
 YearBuilt,Feature Engineering - Dropped,Column removed after creating HouseAge,Redundant with HouseAge; age is more interpretable than year
 YearRemodAdd,Feature Engineering - Dropped,Column removed after creating RemodAge,Redundant with RemodAge; eliminates multicollinearity
@@ -82,6 +83,8 @@ LotShape,Ordinal Encoding,Mapped: Reg=4 IR1=3 IR2=2 IR3=1,Shape regularity has i
 LandSlope,Ordinal Encoding,Mapped: Gtl=3 Mod=2 Sev=1,Slope severity has inherent ordering
 Utilities,Ordinal Encoding,Mapped: AllPub=4 NoSewr=3 NoSeWa=2 ELO=1,Utility availability has inherent ordering
 PavedDrive,Ordinal Encoding,Mapped: Y=3 P=2 N=1,Paving level has inherent ordering
+GarageFinish,Ordinal Encoding,Mapped: Fin=3 RFn=2 Unf=1 None=0,Interior finish has inherent quality ordering
+Fence,Ordinal Encoding,Mapped: GdPrv=4 MnPrv=3 GdWo=2 MnWw=1 None=0,Fence quality/privacy has inherent ordering
 MSSubClass,One-Hot Encoding,Converted to factor then dummy variables,Dwelling type codes are nominal categories
 MSZoning,One-Hot Encoding,Converted to dummy variables,Zoning classifications are nominal categories
 Street,One-Hot Encoding,Converted to dummy variables,Road type is nominal category
@@ -103,8 +106,6 @@ Heating,One-Hot Encoding,Converted to dummy variables,Heating type is nominal ca
 CentralAir,One-Hot Encoding,Converted to dummy variables,Binary yes/no for central air
 Electrical,One-Hot Encoding,Converted to dummy variables,Electrical system type is nominal category
 GarageType,One-Hot Encoding,Converted to dummy variables,Garage location type is nominal category
-GarageFinish,One-Hot Encoding,Converted to dummy variables,Garage finish level is nominal category
-Fence,One-Hot Encoding,Converted to dummy variables,Fence type is nominal category
 MiscFeature,One-Hot Encoding,Converted to dummy variables,Miscellaneous feature type is nominal category
 SaleType,One-Hot Encoding,Converted to dummy variables,Sale type is nominal category
 SaleCondition,One-Hot Encoding,Converted to dummy variables,Sale condition is nominal category
