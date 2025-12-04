@@ -96,8 +96,8 @@ generate_statistics <- function(df, has_target = FALSE) {
 train_stats <- generate_statistics(train_data, has_target = TRUE)
 test_stats <- generate_statistics(test_data)
 
-write_csv(train_stats, "train_statistics.csv")
-write_csv(test_stats, "test_statistics.csv")
+write_csv(train_stats, "output/train_statistics.csv")
+write_csv(test_stats, "output/test_statistics.csv")
 
 cat("  - Statistics saved to CSV files\n")
 
@@ -550,8 +550,8 @@ cat("[8/8] Generating post-processing statistics...\n")
 train_stats_processed <- generate_statistics(train_data, has_target = TRUE)
 test_stats_processed <- generate_statistics(test_data)
 
-write_csv(train_stats_processed, "train_statistics_processed.csv")
-write_csv(test_stats_processed, "test_statistics_processed.csv")
+write_csv(train_stats_processed, "output/train_statistics_processed.csv")
+write_csv(test_stats_processed, "output/test_statistics_processed.csv")
 cat("  - Processed statistics saved to CSV files\n")
 
 # Compare Skewness for transformed variables
