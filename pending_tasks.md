@@ -11,6 +11,7 @@
 - [ ] Linear/Ridge/Laso Regression
 - [ ] CV
 - [ ] Outliers
+- [ ] Interactions like OverallQual * GrLivArea or OverallQual * Neighborhood
 ### Evaluation
 - [ ] Apply to test dataset
 - [ ] yhat = exp(shat + 1/2sigma^2)

@@ -81,7 +81,6 @@ Many house-price relationships are curved:
 - [ ] RemodAge^2 - add squared term
 - [ ] OverallQual * GrLivArea - add interaction
 - [ ] OverallQual * TotalSF - add interaction
-- [ ] OverallQual * Neighborhood - interactions with all dummies
 - [ ] GarageCars * GarageArea - add interaction
 - [ ] TotalBath * GrLivArea - add interaction
 - [ ] HouseAge * OverallQual - add interaction
