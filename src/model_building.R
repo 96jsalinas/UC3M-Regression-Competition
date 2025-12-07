@@ -105,8 +105,11 @@ final_fit <- glmnet(
 
 ## 5. Evaluate on held-out validation set (using model trained on FULL data)
 
-yhat_valid_log <- as.numeric(predict(final_fit, newx = X_valid_cv, s = best_lambda))
+yhat_valid_log <- as.numeric(
+  predict(final_fit, newx = X_test, s = best_lambda)
+  )
 
+#root mean square error
 rmse <- function(truth, pred) sqrt(mean((truth - pred)^2))
 
 rmse_valid_log <- rmse(y_valid_cv, yhat_valid_log)
@@ -130,3 +133,8 @@ head(submission)
 
 ## Optionally write to CSV
 # write.csv(submission, "submission.csv", row.names = FALSE)
+
+############################
+
+
+
