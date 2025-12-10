@@ -3,8 +3,8 @@ library(dplyr)
 
 # Define file paths
 # Assuming the script is run from the root of the project directory
-train_path <- "Provided files/train.csv"
-test_path <- "Provided files/test.csv"
+train_path <- "./Provided files/train.csv"
+test_path <- "./Provided files/test.csv"
 
 # Load the data
 if (file.exists(train_path)) {
