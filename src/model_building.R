@@ -20,13 +20,13 @@ if (!("SalePrice" %in% names(train_data))) {
 }
 
 ## Keep Ids for later
-id_test  <- test_data$Id
+id_test <- test_data$Id
 id_train <- train_data$Id
 
 ## Drop Id from modelling features if present
 train_mod <- train_data %>%
   select(-Id)
-test_mod  <- test_data %>%
+test_mod <- test_data %>%
   select(-Id)
 
 ## 1. Create train / validation split from TRAIN ONLY
@@ -70,21 +70,21 @@ for (i in seq_along(alphas)) {
     alpha       = a,
     nfolds      = 10,
     family      = "gaussian",
-    standardize = FALSE   # already standardized in preprocessing
+    standardize = FALSE # already standardized in preprocessing
   )
   cv_fits[[i]] <- cv_fit
   cv_results$lambda_min[i] <- cv_fit$lambda.min
-  cv_results$cvm_min[i]    <- min(cv_fit$cvm)
+  cv_results$cvm_min[i] <- min(cv_fit$cvm)
 
-pct <- round(100 * i / length(alphas), 1)
-cat(sprintf("\rAlpha %d/%d (%.1f%%) complete", i, length(alphas), pct))
-flush.console()
+  pct <- round(100 * i / length(alphas), 1)
+  cat(sprintf("\rAlpha %d/%d (%.1f%%) complete", i, length(alphas), pct))
+  flush.console()
 }
 
 cat("\n")
 toc()
-best_idx    <- which.min(cv_results$cvm_min)
-best_alpha  <- cv_results$alpha[best_idx]
+best_idx <- which.min(cv_results$cvm_min)
+best_alpha <- cv_results$alpha[best_idx]
 best_lambda <- cv_results$lambda_min[best_idx]
 
 cat("Best alpha:", best_alpha, "  Best lambda:", best_lambda, "\n")
@@ -106,10 +106,10 @@ final_fit <- glmnet(
 ## 5. Evaluate on held-out validation set (using model trained on FULL data)
 
 yhat_valid_log <- as.numeric(
-  predict(final_fit, newx = X_test, s = best_lambda)
-  )
+  predict(final_fit, newx = X_valid_cv, s = best_lambda)
+)
 
-#root mean square error
+# root mean square error
 rmse <- function(truth, pred) sqrt(mean((truth - pred)^2))
 
 rmse_valid_log <- rmse(y_valid_cv, yhat_valid_log)
@@ -117,10 +117,10 @@ cat("Validation RMSE on log1p(SalePrice):", rmse_valid_log, "\n")
 
 ## 6. Predict on TEST set and back-transform to original SalePrice
 
-X_test <- model.matrix(~ ., data = test_mod)[, -1]
+X_test <- model.matrix(~., data = test_mod)[, -1]
 
 yhat_test_log <- as.numeric(predict(final_fit, newx = X_test, s = best_lambda))
-SalePrice_pred <- exp(yhat_test_log) - 1   # inverse of log1p
+SalePrice_pred <- exp(yhat_test_log) - 1 # inverse of log1p
 
 ## 7. Build submission dataframe
 
@@ -135,6 +135,3 @@ head(submission)
 # write.csv(submission, "submission.csv", row.names = FALSE)
 
 ############################
-
-
-

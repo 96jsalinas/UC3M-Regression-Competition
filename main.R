@@ -1,5 +1,7 @@
 library(readr)
 library(dplyr)
+# Setting seed for reproducibility
+set.seed(1000)
 
 # Define file paths
 # Assuming the script is run from the root of the project directory
