@@ -5,11 +5,6 @@
 ##   - test_data:  preprocessed, no SalePrice
 ## =========================================================
 
-library(glmnet)
-library(dplyr)
-library(caret)
-library(tictoc)
-
 ## 0. Sanity checks
 if (!exists("train_data") || !exists("test_data")) {
   stop("train_data and test_data must exist (run preprocessing first).")
@@ -131,7 +126,7 @@ submission <- data.frame(
 
 head(submission)
 
-## Optionally write to CSV
-# write.csv(submission, "submission.csv", row.names = FALSE)
-
-############################
+## 8. Write predictions to Excel file
+output_path <- file.path("Provided files", "predicted_prices.xlsx")
+write.xlsx(submission, output_path, rowNames = FALSE)
+cat("Predictions written to:", output_path, "\n")
