@@ -369,6 +369,7 @@ nominal_cols_to_encode <- nominal_cols_present[sapply(
 
 if (length(nominal_cols_to_encode) > 0) {
   # Combine train and test to ensure same levels
+  # To avoid issues such as a specific neighborhood not existing in test
   train_data$dataset_flag <- "train"
   test_data$dataset_flag <- "test"
 
@@ -570,7 +571,6 @@ cat("\n  Skewness Reduction Report (Train):\n")
 cat(sprintf("  %-15s | %-10s | %-10s\n", "Feature", "Before", "After"))
 cat("  ------------------------------------------\n")
 
-# Get original skewness from the saved file if possible, otherwise just show current
 if (exists("train_stats")) {
   for (col in log_transform_cols) {
     if (col %in% train_stats$Column && col %in% train_stats_processed$Column) {
