@@ -110,6 +110,21 @@ rmse <- function(truth, pred) sqrt(mean((truth - pred)^2))
 rmse_valid_log <- rmse(y_valid_cv, yhat_valid_log)
 cat("Validation RMSE on log1p(SalePrice):", rmse_valid_log, "\n")
 
+## In-sample R^2 and adjusted R^2 on FULL training data (log1p scale)
+yhat_train_log <- as.numeric(predict(final_fit, newx = X_full, s = best_lambda))
+
+SSE <- sum((y_full - yhat_train_log)^2)
+SST <- sum((y_full - mean(y_full))^2)
+
+R2 <- 1 - SSE / SST
+
+n <- length(y_full)
+p <- ncol(X_full)  # number of predictors (no intercept in glmnet matrix)
+adj_R2 <- 1 - (1 - R2) * (n - 1) / (n - p - 1)
+
+cat(sprintf("In-sample R^2 (log1p): %.4f\n", R2))
+cat(sprintf("In-sample Adjusted R^2 (log1p): %.4f\n", adj_R2))
+
 ## 6. Predict on TEST set and back-transform to original SalePrice
 
 X_test <- model.matrix(~., data = test_mod)[, -1]
