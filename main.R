@@ -28,5 +28,6 @@ if (file.exists(test_path)) {
 
 # Execute Pipeline
 source("src/preprocessing.R")
+source("src/Baseline_Model.R")
 source("src/model_building.R")
 source("src/evaluation.R")
