@@ -33,3 +33,6 @@ df_base <- df[, use_cols]
 baseline_lm <- lm(SalePrice ~ ., data = df_base)
 
 summary(baseline_lm)
+
+print(summary(baseline_lm))
+
