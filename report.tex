@@ -1,0 +1,453 @@
+\documentclass[12pt,oneside]{article} % Removed two-sided layout
+\usepackage[a4paper, margin=1in]{geometry} % Adjust margins
+\usepackage{amsmath, amssymb, amsthm} % For mathematical formatting
+\usepackage{graphicx} % For including figures
+\usepackage{float} % To control figure placement
+\usepackage[numbers]{natbib} % For bibliography
+\usepackage{setspace} % For line spacing
+\usepackage{hyperref} % For clickable links and references
+\usepackage{titlesec} % To format section titles
+\usepackage{subcaption} % Include this in the preamble
+\usepackage{listings}
+\usepackage{booktabs} % For \toprule, \midrule, \bottomrule
+\usepackage{xcolor}
+\usepackage{bm}
+\usepackage{url}
+\lstset{
+    basicstyle=\ttfamily\small,
+    breaklines=true,
+    numbers=left,
+    numberstyle=\tiny,
+    keywordstyle=\color{blue},
+    commentstyle=\color{gray},
+    stringstyle=\color{red},
+    frame=single
+}
+
+\title{Regression Competition}
+\author{Eoin Gallagher, Josu Salinas, Francisca Eeckels, Alejandro Cespedes}
+\date{December 2025}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+\noindent
+This report develops a predictive model for residential house prices using a dataset of U.S.\ home sales with a rich set of structural, quality, location, age, and amenity variables. The modelling target is \texttt{SalePrice}, and predictive performance is assessed primarily using RMSE on the log scale. We apply a consistent preprocessing pipeline (imputation, feature engineering, log-transformations, ordinal and one-hot encoding, and standardisation) and compare a baseline OLS benchmark to regularised regression models. The Elastic Net provides the strongest and most stable out-of-sample performance and is refit on the full training set to generate test-set predictions in the required submission format. An adjusted \(R^2\) value of 0.9032 was achieved, accompanied by lowest RMSE of 0.098. The average RMSE achieved by the model over various validation splits scored 0.1084. 
+\end{abstract}
+
+\section{Introduction}
+
+\subsection{Background and Motivation}
+
+\noindent 
+House prices are driven by many property and neighbourhood characteristics, but these factors do not fully determine transaction values because some relevant information is unobserved or measured with noise, and market conditions introduce additional variability.\\
+
+\noindent 
+Nevertheless, statistical models are useful because they provide scalable and consistent price estimates using recorded housing attributes, avoiding the cost of individualised valuation for large numbers of homes.\\
+
+\noindent 
+In this competition, we use a dataset of U.S. residential sales to build a regression model that predicts $\log(\texttt{SalePrice})$ and assess performance on unseen data using RMSE. The goals are to obtain strong predictive accuracy, identify important price drivers, and justify the final model using transparent validation and model selection. 
+
+\section{Data Description}
+
+\noindent
+The dataset for this competition contains detailed characteristics of 2{,}919 residential homes in the U.S. together with their observed sale prices (\texttt{SalePrice}). It includes a wide range of structural, quality, and neighbourhood-related variables (e.g., living area, overall quality, basement and garage features).\\
+
+\noindent
+The task is to predict \texttt{SalePrice} for each property in the test set (working with $\log(\texttt{SalePrice})$) and to evaluate predictive performance using RMSE. In our analysis, we build and compare regression-based models using only the techniques covered in the course, and justify the final model choice based on out-of-sample accuracy and transparent modelling steps.
+
+
+
+\subsection{Data Sources and Files}
+
+For the competition, four files were included for us to conduct our analysis. Those files were \texttt{train.csv}, \texttt{test.csv}, \texttt{data\_description.txt}, and \texttt{predicted\_prices.xlsx}.
+
+\begin{itemize}
+    \item \texttt{train.csv} is intended for training the model. This file contains 1{,}460 observations with 81 features (including Sale Price). 
+    
+    \item \texttt{test.csv} contains the data meant for testing our model once it has been fitted. This file contains 1,459 observations, with 80 features. Since this is the testing dataset, the SalePrice column has been omitted.
+    
+    \item \texttt{data\_description.txt} contains a description for each of the features for our dataset. This file goes into depth what each variable describes, and the values that are assigned for this variable. If it is a categorical or binary variable, it is elaborated on what the labels mean for that feature. 
+    
+    \item \texttt{predicted\_prices.xlsx} , which is intended for where the final predicted prices of our model will be written to. At this point, it is an empty file. 
+
+\end{itemize}
+
+\subsection{Aims and Research Questions}
+\begin{itemize}
+    \item \textbf{Predictive goal:} build an effective model for \texttt{SalePrice} using the provided predictors and the preprocessing pipeline.
+
+    \item \textbf{Primary evaluation:} assess predictive accuracy with RMSE on held-out / cross-validated data.
+
+    \item \textbf{Interpretability goal:} identify the most important attributes associated with variation in \texttt{SalePrice}, based on the fitted regression model(s) and their selected features.
+    
+    \item \textbf{Research questions:}
+    \begin{itemize}
+        \item Which groups of variables (size, quality, location, age, amenities) explain the largest share of variability in \texttt{SalePrice}?
+        \item What distinguishes low-priced from high-priced houses in terms of size/quality/location/amenities?
+        \item How accurate are predictions on unseen data, as measured by validation RMSE and residual diagnostics?
+    \end{itemize}
+\end{itemize}
+
+
+\section{Exploratory Data Analysis (EDA)}
+
+To assess data quality and identify distribution characteristics, a comprehensive analysis pipeline was developed using a custom function, \texttt{generate\_statistics}. This function iterates through all features in the training and testing datasets to generate a descriptive summary, which is exported to CSV format for external visualisation. The specific statistics generated by the pipeline are detailed in Table~\ref{tab:statistics_desc}.
+
+\begin{table}[h]
+    \centering
+    \renewcommand{\arraystretch}{1.2} % Adds slight vertical padding
+    \begin{tabular}{l p{10cm}}
+        \toprule
+        \textbf{Statistic} & \textbf{Description} \\
+        \midrule
+        Column & The name of the variable in the dataframe. \\
+        Type & The class/data type of the variable. \\
+        Missing\_Count & The total number of missing (`NA`) observations. \\
+        Missing\_Pct & The percentage of missing values. \\
+        Unique\_Values & The count of distinct values. \\
+        Min & The minimum observed value (numeric variables only). \\
+        Median & The median value (numeric variables only). \\
+        Mean & The arithmetic average (numeric variables only). \\
+        Max & The maximum observed value (numeric variables only). \\
+        SD & Standard Deviation. \\
+        Skewness & Skewness. \\
+        Kurtosis & Kurtosis. \\
+        Corr\_SalePrice & Pearson correlation coefficient with the target variable `SalePrice`. \\
+        Skew\_Flag & Interpretive label for skewness (Normal, Moderately Skewed, or Highly Skewed). \\
+        \bottomrule
+    \end{tabular}
+    \caption{Description of Generated Summary Statistics}
+    \label{tab:statistics_desc}
+\end{table}
+
+\subsection{Statistical Methodology}
+The analysis focused on three primary dimensions: data integrity, distribution shape, and target correlation.
+
+\begin{itemize}
+    \item \textbf{Data Integrity:} Missing values were quantified both by count and percentage (\texttt{Missing\_Pct}).
+    \item \textbf{Distribution Metrics:} For numeric features, Skewness and Kurtosis were calculated to identify non-normal distributions. An automated interpretation flag (\texttt{Skew\_Flag}) was generated based on the following thresholds:
+    \begin{itemize}
+        \item $|Skewness| > 1$: Highly Skewed
+        \item $0.5 < |Skewness| \le 1$: Moderately Skewed
+        \item $|Skewness| \le 0.5$: Normal
+    \end{itemize}
+    Features identified as skewed were flagged for potential log-transformation in the preprocessing stage.
+    \item \textbf{Target Relationship:} For the training set, the Pearson correlation coefficient was calculated between each numeric feature and the target variable, \texttt{SalePrice}, to quantify linear relationships.
+\end{itemize}
+
+\section{Data Preparation and Feature Engineering}
+
+\subsection{Missing value handling}
+Missing values were identified in both the training and testing data with the aforementioned statistics. Missing values were treated the same way in training and testing.
+\begin{itemize}
+    \item Categorical values were imputed with a \texttt{None} value. 
+    \item Numerical values were imputed with $0$ for most categories
+    \item \texttt{LotFrontage} was imputed with neighbourhood median from the training data, with the overall median as fallback for the neighbourhoods without values.
+\end{itemize}
+In the test data there were a few columns identified with NAs that were not present in training data, these were treated separately, and the mode of the training data was imputed.
+
+\subsection{Feature Engineering}
+
+The following features were created:
+\begin{itemize}
+    \item Total area features, such as \texttt{TotalSF} which contains the total squared footage of the house, or \texttt{TotalBath} which multiplies by 0.5 \texttt{HalfBath} before adding it.
+    \item Age features, where based on \texttt{YrSold} the age was calculated, for example $HouseAge = YrSold - YearBuilt$. This was done with the understanding that age was more meaningful than the years. The year features were dropped after these new features were created to avoid redundancy.
+    \item Binary flags, indicating wether a house had a garage, a basement, a pool, etc.
+\end{itemize}
+
+\subsection{Transformations}
+Skewed features identified in the EDA were log transformed, due to the fact that many of the features contain rows with 0 values, $log(1+x)$ was used (function \texttt{log1p} in R) to avoid \texttt{-inf} values. The target variable \texttt{SalePrice} which is also highly skewed was also log transformed using the same function.
+
+\subsection{Encoding}
+Ordinal variables were encoded using specific mappings to preserve the ordinal nature of the data. For example, quality metrics (e.g., \texttt{KitchenQual, BsmtQual}) were mapped as: \texttt{Ex=5, Gd=4, TA=3, Fa=2, Po=1, None=0}. Similarly, \texttt{BsmtExposure} and \texttt{Functional} functionalities were mapped to numeric ranks reflecting their utility.\\
+
+\noindent
+Nominal variables were one-hot encoded. To avoid issues where levels may be different in train and test, such as a specific neighbourhood not existing in test, both datasets were merged before doing the one-hot encoding and then split back.
+
+\subsection{Standardisation}
+Numeric features were standardised using Z-score normalisation to ensure that variables with different scales contribute equally to the model. The transformation was applied according to the following equation:
+
+\[
+    z = \frac{x - \mu}{\sigma}
+\]
+\noindent
+To prevent data leakage, the scaling parameters ($\mu$ and $\sigma$) were computed exclusively using the training set. These fixed parameters were then applied to transform both the training and testing datasets. The target variable \texttt{SalePrice} and the identifier \texttt{Id} were excluded from this standardisation process.
+
+\subsection{Polynomial and interaction terms}
+Polynomial and interaction terms were created, this was done after standardisation to keep the scale of the interactions consistent.
+\begin{itemize}
+    \item Squared terms were created for area and time/age features with the objective of reflecting possible non-linear relationships of the area, that is the relationship between price and area of the lot may be one between 1,000 and 2,000 squared feet but may be different on higher ends, reflecting increasing prices in luxury houses.
+    \item The following interaction terms were created: \texttt{OverallQual} and \texttt{GrLivingArea}, \texttt{OverallQual} and \texttt{TotalSF}, \texttt{GarageCars} and \texttt{GarageArea}, \texttt{TotalBath} and \texttt{GrLivingArea}, \texttt{HouseAge} and \texttt{OverallQual}.
+\end{itemize}
+
+\subsection{Postprocessing}
+After all these transformations were conducted the same function to generate statistics was used in the processed datasets. Significant skewness reduction was found in most features, however for features such as \texttt{PoolArea} where a lot of zeros were present in the data the reduction was not significant, this was expected.
+
+\section{Modelling Strategy}
+\subsection{Overview of Candidate Models}
+
+Four initial models were considered for the regression model, consisting of Multiple Linear Regression (OLS), Ridge Regression, Lasso Regression, and an Elastic Net. 
+
+\begin{itemize}
+\item OLS serves as a transparent benchmark, producing easy to interpret coefficients. However, OLS is sensitive to multicollinearity and high dimensionality, making it not a suitable choice for this model. 
+\item Ridge regression addresses multicollinearity through \({l_2}\) regularisation. This makes it useful for when many correlated housing attributes exist. Ridge regression also retains all predictors while shrinking coefficients. 
+\item Lasso Regression performs automatic variable selection via \(l_1\) penalty. This produces sparse models and also risks instability when predictors are highly correlated.
+\item Elastic Net combines both Ridge and Lasso penalties to produce a model that balances stability and sparsity, making it particularly well-suited for housing data with many correlated predictors and dummy variables. 
+\end{itemize}
+\noindent
+OLS is expected to be the worst of the models due to the properties mentioned above. Ridge and Lasso are expected to perform reasonably, whereas the combination of these in the Elastic Net is expected to perform best due to the large number of predictors, multicollinearity, and the need for regularisation.
+
+%Due to OLS being redundant and both Ridge and Lasso models having desirable qualities, an elastic net was employed which combines Ridge and Lasso penalties in meaningful ways to produce a much more relevant model for our dataset. This elastic net balances stability and sparsity, making it particularly well-suited for housing data with many correlated predictors and dummy variables. This decision was also based upon the large amounts of new variables created, creating potential for larger amounts of information within the model. Using an elastic net allows for incorporation of all new information while letting the model balance to what extent these parameters affect the model.
+
+\subsection{Baseline Model}
+As a benchmark, we first estimated a baseline linear regression model using a limited set of economically intuitive predictors that are widely recognised as key drivers of housing prices. The aim of this model is not to maximise predictive accuracy, but to provide a clear reference point against which more complex models can be evaluated.\\
+
+\noindent
+The baseline model includes:
+\begin{itemize}
+    \item Overall quality of the dwelling.
+    \item Size-related variables (above ground living area, total floor area)
+    \item Age-related variables (house age and remodelled age)
+    \item Basic amenities(number of bathrooms and garage capacity)
+    \item Location effects captured through neighbourhood indicator variables.
+\end{itemize}
+
+\noindent
+Formally, the baseline model is given by:
+\[
+\begin{aligned}
+    log(SalePrice) = &\beta_0 + \beta_1OverallQual + \beta_2GrLivArea + \beta_3TotalSF + \beta_4HouseAge+\\ &\beta_5RemodAge + \beta_6GarageCars + \beta_7TotalBath + \\
+&\beta_{\text{Neighbourhood}_j} All Separate Neigbourhoods
+\end{aligned}
+\]
+The baseline model achieves an adjusted \(R^2\) value of roughly 0.868, indicating that nearly $87\%$ of the variation in log sales prices is explained by this small set of predictors, proving that these predictors supply substantial explanatory power. Several predictors exhibit strong and statistically significant associations with house prices, consistent with economic intuition.\\
+
+\noindent
+The variable \texttt{OverallQual} has one of the largest effects in the model. Its coefficient implies that a one-unit increase in overall material and finish quality is associated with an approximate $10.8\%$ increase in sale price, holding other characteristics constant. This confirms that overall quality is a primary driver of housing value.\\
+
+\noindent
+Measures of house size also play an important role.
+Both \texttt{GrLivArea} and \texttt{TotalSF} are positively and significantly associated with sale price, indicating that larger living areas and total floor space substantially increase house value. Similarly, the number of bathrooms (\texttt{TotalBath}) and garage capacity (\texttt{GarageCars}) have positive effects, reflecting the premium placed on household amenities.\\
+
+\noindent
+Age related variables show negative effects.
+The coefficients on \texttt{HouseAge} and  \texttt{RemodAge} suggest that older houses and houses that have not been recently remodelled tend to sell for lower prices, even after controlling for size and quality.
+This highlights the importance of both construction date and renovation history.\\
+
+\noindent
+Neighbourhood fixed effects capture substantial variation in prices across locations. Several neighbourhoods, such as \texttt{NridgHt}, \texttt{NoRidge}, \texttt{StoneBr}, and \texttt{Crawfor}, exhibit large positive and statistically significant coefficients, indicating higher prices relative to the omitted reference neighbourhood.
+Conversely, neighbourhoods such as \texttt{BrDale} and \texttt{IDOTRR} show negative effects, reflecting less desirable locations.\\
+
+\noindent
+These results confirm that location remains a critical determinant of housing prices beyond physical characteristics alone. Overall, the baseline model provides a strong in-sample fit and economically interpretable coefficients, serving as a useful benchmark against which more complex and regularised models can be compared.
+
+
+\subsection{Extended Models}
+
+Building on the baseline specification, we consider a series of extended models designed to capture a richer set of housing characteristics while maintaining predictive stability. The expansion strategy is guided by three main principles: exploratory analysis, economic intuition, and prior literature on housing price modelling.\\
+
+\noindent
+First, additional variables are selected based on exploratory data analysis, focusing on predictors that exhibit strong marginal associations with the sale price. Variables related to house size, quality, and amenities consistently show high correlations with price and are therefore natural candidates for inclusion.\\
+
+\noindent
+Second, the model expansion is informed by economic and real-estate intuition. Housing prices are known to depend not only on total size, but also on the composition of that space, construction quality, age and renovation history, and the availability of key amenities such as garages, bathrooms, fireplaces, and outdoor features. These considerations motivate the inclusion of a wide range of structural, quality related, and amenity-based variables.\\
+
+\noindent
+Third, our modelling choices are consistent with the existing literature on hedonic pricing models, which typically emphasises location effects, housing characteristics, and amenities as the primary determinants of residential property values. In line with this literature, location is captured through a comprehensive set of neighbourhood indicator variables, allowing for flexible differences in average prices across areas.\\
+
+\noindent
+The resulting extended feature set is high-dimensional and includes:
+\begin{itemize}
+    \item \textbf{Structural size measures}, such as multiple floor area variables and derived size aggregates.
+    \item \textbf{Quality and condition scores}, capturing construction quality, interior finishes, and maintenance.
+    \item \textbf{Location indicators}, represented by neighbourhood dummy variables.
+    \item \textbf{Amenities and engineered features}, including garage capacity, bathroom counts, and other value enhancing characteristics.
+\end{itemize}
+
+\noindent
+While this richer specification substantially increases model flexibility, it also introduces challenges related to multicollinearity and model complexity. Many of the included predictors are strongly correlated (for example, different measures of house size), which can destabilise ordinary least squares estimates. Rather than manually removing correlated variables, we address this issue through regularisation, allowing correlated predictors to be retained while controlling estimator variance.\\
+
+\noindent
+In addition, limited non-linearities and interaction effects are considered through engineered features, motivated by observed curvature in relationships between size, quality, and price. These extensions aim to improve predictive accuracy without sacrificing interpretability or robustness.\\
+
+\noindent
+Overall, the extended models provide a flexible yet principled framework for capturing the complex determinants of house prices, forming the basis for the regularised regression approaches evaluated in subsequent sections.
+
+
+\section{Model Evaluation and Selection}
+
+\subsection{Performance Measures}
+
+Model performance is evaluated primarily using the root mean squared error (RMSE) computed on the logarithm of the sale price. Formally, for observed values $y_i$ and predictions $\hat{y}_i$, RMSE is defined as
+\[
+\text{RMSE} = \sqrt{\frac{1}{n} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2}.
+\]
+
+\noindent
+Evaluating RMSE on the log scale has several advantages. First, it reduces the influence of extremely expensive properties, which would otherwise dominate error measures on the original price scale. Second, it places greater emphasis on relative rather than absolute prediction errors, which is more appropriate in housing price applications. Finally, it aligns with the transformation applied to the response variable during model estimation.\\
+
+\noindent
+We distinguish between two types of performance assessment. In-sample performance refers to model fit on the training data and is summarised using training RMSE and measures such as $R^2$ or adjusted $R^2$. While useful for diagnosing model fit, in-sample metrics can be overly optimistic, particularly for high-dimensional models.\\
+
+\noindent
+In contrast, out-of-sample performance is assessed using validation or cross-validation RMSE, computed on data not used to estimate model parameters. This measure provides an unbiased estimate of predictive accuracy on unseen data and is therefore the primary criterion for model comparison and selection.\\
+
+\noindent
+Throughout this analysis, models are compared primarily on the basis of their out-of-sample RMSE on $\log(\texttt{SalePrice})$, with in-sample metrics used only as supplementary diagnostic tools.
+
+
+\subsection{In-sample Goodness of Fit}
+
+We first compare candidate models in terms of their in-sample goodness of fit. This analysis provides insight into how well each model explains the observed data, although it is not used as the primary criterion for model selection.\\
+
+\noindent
+For each model, in-sample performance is summarised using the training RMSE on $\log(\texttt{SalePrice})$ and, where applicable, the coefficient of determination $R^2$ or adjusted $R^2$. As expected, more flexible models with a larger number of predictors achieve lower training RMSE and higher $R^2$ values than simpler specifications.\\
+
+\noindent
+The baseline linear regression model already explains a substantial proportion of the variation in log house prices, indicating that size, quality, age, amenities, and location capture much of the systematic structure in the data. Extended linear models further improve in-sample fit by incorporating additional predictors and engineered features, though these gains diminish as model complexity increases.\\
+
+\noindent
+Residual diagnostics for the in-sample fit show that residuals are approximately centred around zero, with no systematic patterns suggesting major model misspecification. However, some degree of heteroscedasticity and the presence of large residuals for a small number of observations are evident, reflecting the inherent heterogeneity of housing prices.\\
+
+\noindent
+Importantly, the strongest in-sample results are obtained for the most complex models, particularly those including a high-dimensional set of predictors. While these models achieve very low training error, such improvements may reflect overfitting rather than genuine predictive gains. Consequently, strong in-sample performance alone is not sufficient to justify model choice, motivating the emphasis on out-of-sample evaluation in the next section.
+
+\subsection{Out-of-sample Performance}
+
+Out-of-sample performance is evaluated using validation and cross-validation RMSE computed on $\log(\texttt{SalePrice})$. This measure provides an estimate of predictive accuracy on unseen data and is therefore the primary criterion for comparing competing models.\\
+
+\noindent
+The baseline linear regression model yields a validation RMSE in the range of approximately $0.14$--$0.15$, serving as a useful reference point. Extended linear models incorporating additional predictors and engineered features improve upon this baseline, but the magnitude of improvement is limited and varies depending on the validation split.\\
+
+\noindent
+Regularised regression models provide a more substantial and consistent improvement in out-of-sample performance. In particular, elastic net regression achieves validation RMSE values typically in the range of $0.10$--$0.12$ across multiple random train--validation splits. These results represent a clear improvement over both the baseline and unregularised extended linear models.\\
+
+\noindent
+While some highly complex specifications achieve very low in-sample error, their out-of-sample performance does not improve commensurately. In several cases, increased model complexity leads to higher validation RMSE, indicating overfitting. This highlights the importance of regularisation when working with a high-dimensional set of correlated predictors.\\
+
+\noindent
+Among the models considered, elastic net regression consistently delivers the best balance between predictive accuracy and model stability. Although the exact validation RMSE varies with the choice of random split, elastic net models reliably outperform simpler alternatives while avoiding the instability observed in more complex unregularised specifications.\\
+
+\noindent
+Based on these results, elastic net regression is identified as the top-performing model on validation data. Its strong and robust out-of-sample performance motivates its selection as the final model used for predicting house prices in the test dataset.
+
+\subsection{Final Model(s) Chosen}
+
+\noindent
+Based on the out-of-sample comparison, we select an \textbf{elastic net regression} model as the final solution. The model is evaluated on the transformed target $y=\log(1+\texttt{SalePrice})$ using the full set of preprocessed predictors. Elastic net was chosen because the feature space is high-dimensional and contains substantial multicollinearity across size- and quality-related measures. The combined $\ell_1/\ell_2$ penalty provides both coefficient shrinkage and automatic variable selection, giving stable predictions without manually removing correlated predictors. \\
+\noindent
+
+Relative to the baseline OLS benchmark, elastic net achieves a substantially lower validation RMSE on the log scale and remains robust across random train/validation splits, while avoiding the overfitting observed for more complex unregularised specifications. Residual diagnostics on the validation set (Q--Q plot and residuals vs.\ fitted) suggest errors are approximately centred around zero with no severe systematic patterns, supporting the adequacy of the final specification for prediction.
+
+
+\section{Interpretation of the Best Model(s)}
+
+\subsection{Most Important Variables}
+
+For the final elastic net model, variable importance is assessed using the magnitude of the estimated coefficients at the selected regularisation parameters. Since all numeric predictors are standardised prior to estimation, coefficient magnitudes are directly comparable across variables. Larger absolute values therefore indicate a stronger association with $\log(\texttt{SalePrice})$.\\
+
+\noindent
+Because many predictors are correlated and several effects are represented by groups of dummy variables (e.g.\ neighbourhood indicators), importance is also examined at a grouped level. Specifically, absolute coefficients are aggregated within broad feature categories such as size, quality, location, age, and amenities. This provides a more stable and interpretable summary of which types of housing characteristics contribute most to price variation.\\
+
+\noindent
+Table~\ref{tab:coef_groups}, based on the baseline model, shows that size and quality related variables dominate overall explanatory power, followed by neighbourhood effects and amenities. This ranking remains qualitatively consistent in the regularised elastic net model, confirming the central role of these feature groups in determining house prices.
+
+\begin{table}[H]
+\centering
+\caption{Grouped Absolute Coefficient Effects}
+\label{tab:coef_groups}
+\begin{tabular}{lcc}
+\toprule
+\textbf{Feature Group} & \textbf{Total Absolute Effect} & \textbf{Number of Features} \\
+\midrule
+Size         & 0.223 & 9  \\
+Quality      & 0.202 & 11 \\
+Other        & 0.152 & 30 \\
+Neighbourhood & 0.116 & 12 \\
+Amenities    & 0.089 & 7  \\
+Age          & 0.054 & 2  \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Cheapest vs.\ Most Expensive Houses}
+
+To better understand the drivers of predicted house prices, properties are grouped into the bottom and top deciles based on predicted $\log(\texttt{SalePrice})$. These groups exhibit clear and intuitive differences across multiple dimensions.\\
+
+\noindent
+High-priced houses are characterised by substantially larger living areas, higher overall quality scores, newer construction or recent renovations, and favourable neighbourhood locations. They are also more likely to include amenities such as multiple bathrooms, garages with higher capacity, and additional features such as fireplaces or pools.\\
+
+\noindent
+In contrast, low-priced houses tend to be smaller, older, and of lower overall quality, with fewer amenities and a higher concentration in less desirable neighbourhoods. These differences align closely with the variables identified as most important by the regression models.\\
+
+\noindent
+Overall, the comparison highlights that variation in predicted prices is primarily driven by a combination of size, quality, and location, with amenities and age playing secondary but meaningful roles.
+
+
+\subsection{Limitations of Interpretation}
+
+The results should be interpreted with several limitations in mind. First, the analysis is based on observational data, and estimated associations should not be interpreted as causal effects. Second, relevant variables such as interior design, precise location attributes, or local market conditions may be omitted.\\
+
+\noindent
+Finally, interpretation is constrained by modelling choices, including the assumption of linear effects (apart from limited interactions) and the restriction to regression-based methods covered in the course. These limitations suggest caution when generalising results beyond the observed data.
+
+\section{Final Predictions}
+
+\noindent
+After selecting elastic net regression as the final model based on validation RMSE, we refit the model using the \emph{full} preprocessed training dataset and the tuned hyperparameters (best $\alpha$ and $\lambda$). To ensure consistency between training and test-time inference, the test set is passed through the \emph{same} preprocessing pipeline as the training data: missing-value handling (including neighbourhood-median imputation for \texttt{LotFrontage}), log-transformations for skewed predictors and the response via $\log(1+x)$, ordinal encoding, one-hot encoding for nominal variables, and z-score standardisation using means and standard deviations computed on the training set only.\\
+
+\noindent
+Predictions are generated by constructing model matrices from the processed features (excluding \texttt{Id}), predicting $\log(1+\texttt{SalePrice})$ for each test observation, and transforming back to the original price scale using the inverse transformation $\widehat{\texttt{SalePrice}}=\exp(\widehat{y})-1$.\\
+
+\noindent
+Finally, the submission file is created in the required format with two columns (\texttt{Id}, \texttt{SalePrice}) and written to \texttt{predicted\_prices.xlsx} in the provided folder, as required by the competition. 
+
+
+\section{Conclusions}
+
+\subsection{Summary of Main Results}
+
+This report developed a predictive regression model for residential house prices using the provided Ames housing dataset. The modelling target was the transformed response
+\[
+y=\log(1+\texttt{SalePrice}),
+\]
+and predictive accuracy was assessed primarily through RMSE on the log scale using out-of-sample validation.\\
+
+\noindent
+A baseline OLS specification using economically intuitive predictors (quality, size, age, amenities, and neighbourhood indicators) achieved strong explanatory power in-sample (adjusted $R^2 \approx 0.87$), confirming that these variables capture most of the systematic variation in prices. However, extending the feature set substantially increases dimensionality and multicollinearity, making unregularised OLS unstable and prone to overfitting.\\
+
+\noindent
+To address this, we compared ridge, lasso, and elastic net regularisation. Elastic net consistently delivered the best balance of predictive accuracy and stability across random train/validation splits. In our best-performing split, elastic net achieved a validation RMSE on $\log(1+\texttt{SalePrice})$ of approximately $0.09$--$0.10$, representing a clear improvement over the baseline model. The final model was therefore selected as an elastic net regression fit on the full preprocessed training data with tuned hyperparameters $(\alpha,\lambda)$.
+
+\subsection{Key Drivers of House Prices}
+
+Across both baseline and regularised models, the strongest determinants of price are consistent with economic intuition:
+\begin{itemize}
+    \item \textbf{Quality measures} (especially \texttt{OverallQual} and interior finish variables) show large positive associations with price.
+    \item \textbf{Size variables} (living area and total floor area aggregates) remain among the most important predictors.
+    \item \textbf{Location effects} (neighbourhood indicators) account for substantial variation beyond physical characteristics.
+    \item \textbf{Age and renovation history} negatively relate to price, with newer or recently remodelled properties commanding a premium.
+    \item \textbf{Amenities} (garage capacity, bathroom counts, fireplaces, etc.) contribute positively but are secondary to size/quality/location.
+\end{itemize}
+These findings align with hedonic pricing theory: residential value reflects a bundle of structural attributes, quality of construction, and locational desirability.
+
+\subsection{Practical Implications}
+
+The resulting model provides a scalable and consistent way to estimate house values from recorded attributes. Such models can support applications including automated valuation, benchmarking list prices, credit/risk assessment, and identifying the attributes most associated with higher or lower valuations.
+
+\subsection{Limitations and Future Work}
+
+This analysis is based on observational data, so coefficient interpretations reflect association rather than causation, and omitted variables may explain residual variation. In addition, the modelling approaches were restricted to regression techniques covered in the course, limiting the use of more flexible non-linear predictive methods.\\
+
+\noindent
+Future work could improve performance by (i) systematically exploring additional interaction structures and retaining only those that improve validation RMSE, (ii) performing more robust repeated cross-validation to reduce split sensitivity, and (iii) considering more advanced models beyond the scope of the course. Finally, enriching the dataset with additional local and market-condition features would likely improve predictive accuracy further.
+
+
+\section{Developed Code}
+GitHub was used in the project to enable collaboration between teammates. The code can be found in \url{[https://github.com/96jsalinas/UC3M-Regression-Competition}.
+
+\end{document}
+
