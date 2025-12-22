@@ -49,8 +49,8 @@ UC3M-Regression-Competition/
 │   │                           # transformations, encoding, and standardization
 │   ├── Baseline_Model.R        # Simple linear model for baseline comparison
 │   ├── model_building.R        # Elastic Net model with cross-validation
-│   └── evaluation.R            # Model evaluation and diagnostic plots
-│   └── LassoModel.R            # Model evaluation using base Lasso regression
+│   ├── evaluation.R            # Model evaluation and diagnostic plots
+│   ├── LassoModel.R            # Model evaluation using base Lasso regression
 │   └── RidgeModel.R            # Model evaluation using base Ridge regression 
 │
 ├── Provided files/             # Input data and competition materials
