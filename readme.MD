@@ -4,6 +4,8 @@
 
 This project builds a regression model for the UC3M Regression Models course. The goal is to predict house sale prices using the Ames Housing dataset. The pipeline includes comprehensive data preprocessing (handling missing values, feature engineering, transformations, and encoding), a baseline linear model for reference, and an Elastic Net regression model with cross-validated hyperparameter tuning for final predictions.
 
+This project was the winner of the competition by achieving the lowest RMSE🥳
+
 ## How to Run the Project
 
 ### Prerequisites
